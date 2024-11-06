@@ -4,6 +4,7 @@ import { WELCOME } from "../../../routes";
 import { LoginOutlined } from "@ant-design/icons";
 import LoginForm from "../LoginForm";
 import { useState } from "react";
+import { getConfigFor } from "../../../../config";
 
 const SimpleMenu = ({
   loginLocalUser,
@@ -30,7 +31,7 @@ const SimpleMenu = ({
     },
   ];
 
-  (process.env.NODE_ENV == "development" || process.env.ENABLE_E2E) &&
+  (process.env.NODE_ENV == "development" || getConfigFor("ENABLE_E2E")) &&
     menuItems.unshift({
       key: "localLogin",
       label: (

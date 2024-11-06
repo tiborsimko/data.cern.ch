@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Space, Form, Input, Radio } from "antd";
+import { getConfigFor } from "../../../config";
 const BLOCK_DEPOSIT_GROUPS = ["cms-analysis"];
 const CreateForm = ({
   contentTypes,
@@ -17,7 +18,7 @@ const CreateForm = ({
   }, []);
 
   let contentType = contentTypes;
-  if (!(process.env.NODE_ENV === "development" || process.env.ENABLE_E2E)) {
+  if (!(process.env.NODE_ENV === "development" || getConfigFor("ENABLE_E2E"))) {
     contentType =
       contentTypes &&
       contentTypes.filter(

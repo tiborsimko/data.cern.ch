@@ -22,6 +22,10 @@ jobs:
         run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
         id: get_branch
 
+      - name: Extract short commit SHA
+        id: get_short_sha
+        run: echo "SENTRY_RELEASE=$(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_OUTPUT
+
       - id: build-ui
         name: Build and export
         uses: cern-sis/gh-workflows/.github/actions/docker-build@v6.1.0
@@ -35,10 +39,8 @@ jobs:
           username: ${{ secrets.HARBOR_USERNAME }}
           password: ${{ secrets.HARBOR_PASSWORD }}
           build-args: |
-            BRANCH_NAME=${{ steps.get_branch.outputs.BRANCH_NAME }}
-            PIWIK_ENV=${{ steps.get_branch.outputs.BRANCH_NAME }}
-            CAP_PIWIK_URL=${{ secrets.CAP_PIWIK_URL }}
-            CAP_PIWIK_SITEID_DEV=${{ secrets.CAP_PIWIK_SITEID_DEV }}
-            CAP_PIWIK_SITEID_PROD=${{ secrets.CAP_PIWIK_SITEID_PROD }}
-            CAP_PIWIK_SITEID_QA=${{ secrets.CAP_PIWIK_SITEID_QA }}
-            CAP_PIWIK_SITEID_TEST=${{ secrets.CAP_PIWIK_SITEID_TEST }}
+            SENTRY_URL=${{ secrets.CAP_SENTRY_URL }}
+            SENTRY_ORG=${{ secrets.CAP_SENTRY_ORG }}
+            SENTRY_PROJECT=${{ secrets.CAP_SENTRY_PROJECT }}
+            SENTRY_AUTH_TOKEN=${{ secrets.CAP_SENTRY_AUTH_TOKEN }}
+            SENTRY_RELEASE=${{ steps.get_short_sha.outputs.SENTRY_RELEASE }}

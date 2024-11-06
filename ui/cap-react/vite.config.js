@@ -43,6 +43,14 @@ export default defineConfig(({ mode }) => {
       commonjsOptions: {
         transformMixedEsModules: true,
       },
+      sourcemap: true, // For Sentry
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            "react-formule": ["react-formule"],
+          },
+        },
+      },
     },
     // Allows writing JSX in .js files
     esbuild: {

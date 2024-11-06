@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:18-alpine AS build
 
 RUN apk add --no-cache git
 
@@ -6,48 +6,19 @@ ENV WORKING_DIR=/tmp/cap
 
 WORKDIR $WORKING_DIR
 
-ARG PIWIK_ENV=dev
-ARG ENABLE_E2E
+ARG SENTRY_URL
+ARG SENTRY_ORG
+ARG SENTRY_PROJECT
+ARG SENTRY_AUTH_TOKEN
+ARG SENTRY_RELEASE
 
-ARG CAP_PIWIK_URL
-ARG CAP_PIWIK_SITEID_DEV
-ARG CAP_PIWIK_SITEID_PROD
-ARG CAP_PIWIK_SITEID_QA
-ARG CAP_PIWIK_SITEID_TEST
-
-ARG PIWIK_URL
-ARG PIWIK_SITEID_DEV
-ARG PIWIK_SITEID_PROD
-ARG PIWIK_SITEID_QA
-ARG PIWIK_SITEID_TEST
+ENV SENTRY_URL=$SENTRY_URL
+ENV SENTRY_ORG=$SENTRY_ORG
+ENV SENTRY_PROJECT=$SENTRY_PROJECT
+ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+ENV VITE_SENTRY_RELEASE=$SENTRY_RELEASE
 
 RUN mkdir -p ui/cap-react
-RUN echo "PIWIK_URL=$CAP_PIWIK_URL" >> ui/cap-react/.env
-RUN echo "ENABLE_E2E=$ENABLE_E2E" >> ui/cap-react/.env
-
-RUN if [[ $PIWIK_ENV == "dev" ]]; then \
-        echo "PIWIK_SITEID=$CAP_PIWIK_SITEID_DEV" >> ui/cap-react/.env; \
-    fi
-
-RUN if [[ $PIWIK_ENV == "prod" ]]; then \
-        echo "PIWIK_SITEID=$CAP_PIWIK_SITEID_PROD" >> ui/cap-react/.env; \
-    fi
-
-RUN if [[ $PIWIK_ENV == "qa" ]]; then \
-        echo "PIWIK_SITEID=$CAP_PIWIK_SITEID_QA" >> ui/cap-react/.env; \
-    fi
-
-RUN if [[ $PIWIK_ENV == "test" ]]; then \
-        echo "PIWIK_SITEID=$CAP_PIWIK_SITEID_TEST" >> ui/cap-react/.env; \
-    fi
-
-
-RUN echo "=========================="
-RUN echo $CAP_PIWIK_SITEID_TEST 
-RUN echo $PIWIK_SITEID_TEST
-RUN echo "=========================="
-RUN cat ui/cap-react/.env
-RUN echo "=========================="
 
 WORKDIR $WORKING_DIR/ui
 
@@ -55,6 +26,10 @@ WORKDIR $WORKING_DIR/ui
 COPY ./ui ${WORKING_DIR}/ui
 RUN yarn install
 RUN yarn workspace cap-react build
+WORKDIR ${WORKING_DIR}/ui/cap-react
+RUN yarn sentry:create-release
+RUN yarn sentry:sourcemaps
+RUN yarn sentry:finalize-release
 
 # build general docs
 COPY ./docs ${WORKING_DIR}/docs
@@ -81,6 +56,8 @@ ENV WORKING_DIR=/tmp/cap
 ENV NGINX_HTML_DIR=/usr/share/nginx/html/
 RUN mkdir -p $NGINX_HTML_DIR
 
+# Exclude source maps from the final image
+RUN echo *.map >> .dockerignore
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build ${WORKING_DIR}/ui/cap-react/dist/ $NGINX_HTML_DIR
 COPY --from=build ${WORKING_DIR}/docs/_book/ $NGINX_HTML_DIR/docs/general

@@ -22,6 +22,9 @@
     "test:e2e:run": "cypress run --headless --browser chrome",
     "tests": "start-server-and-test start http://localhost:3000 test:e2e:run",
     "open:cover": "npm run test:cover && opn ./coverage/lcov-report/index.html",
+    "sentry:create-release": "sentry-cli releases new $VITE_SENTRY_RELEASE",
+    "sentry:sourcemaps": "sentry-cli releases files $VITE_SENTRY_RELEASE upload-sourcemaps dist",
+    "sentry:finalize-release": "sentry-cli releases finalize $VITE_SENTRY_RELEASE",
     "dev": "vite",
     "dev:docker": "DOCKER=true vite",
     "preview": "vite preview"
@@ -73,6 +76,7 @@
     "vite": "^5.0.2"
   },
   "devDependencies": {
+    "@sentry/cli": "2.38.2",
     "autoprefixer": "7.1.4",
     "chalk": "2.0.1",
     "concurrently": "3.5.0",
