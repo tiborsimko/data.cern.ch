@@ -29,6 +29,7 @@ import { theme } from "../utils/theme";
 import { customFieldTypes, customFields } from "../forms/formuleConfig";
 import { isEmpty } from "lodash-es";
 import { transformSchema } from "../partials/Utils/schema";
+import FormuleErrorBoundary from "./FormuleErrorBoundary";
 
 const AdminPage = lazy(() => import("../admin"));
 
@@ -87,6 +88,7 @@ const App = ({
                 customFieldTypes={customFieldTypes}
                 customFields={customFields}
                 transformSchema={transformSchema}
+                errorBoundary={FormuleErrorBoundary}
               >
                 <Switch>
                   <Route
