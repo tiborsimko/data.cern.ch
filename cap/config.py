@@ -592,6 +592,7 @@ if search_user and search_password:
         use_ssl=str(os.environ.get('OPENSEARCH_USE_SSL')).lower() == 'true',
         verify_certs=str(os.environ.get('OPENSEARCH_VERIFY_CERTS')).lower()
         == 'true',
+        ssl_show_warn=False,
         url_prefix=os.environ.get('OPENSEARCH_URL_PREFIX', ''),
     )
 else:
