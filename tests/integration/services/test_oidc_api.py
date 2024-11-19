@@ -26,7 +26,7 @@
 """Integration tests for CERN OIDC api."""
 
 import responses
-from mock import patch
+from unittest.mock import patch
 
 from cap.modules.auth.config import OIDC_API
 

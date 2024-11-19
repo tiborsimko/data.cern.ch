@@ -32,7 +32,7 @@ import uuid
 from datetime import datetime
 
 import click
-from flask_cli import with_appcontext
+from flask.cli import with_appcontext
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_pidstore.errors import PIDDoesNotExistError

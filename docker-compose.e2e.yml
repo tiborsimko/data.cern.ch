@@ -63,9 +63,10 @@ services:
       - "FLASK_DEBUG=True"
       - "DEBUG_MODE=True"
       - "DEV_HOST=nginx"
+      - "FLASK_APP=cap/wsgi.py"
     links:
       - cache
-      - es
+      - search
       - mq
       - db
     stdin_open: true
@@ -102,7 +103,7 @@ services:
       - test_data:/test_data
     links:
       - cache
-      - es
+      - search
       - mq
       - db
     stdin_open: true
@@ -113,10 +114,10 @@ services:
       file: docker-services.yml
       service: app
     restart: "always"
-    command: "celery worker -A cap.celery --loglevel=INFO"
+    command: "celery --app=cap.celery worker --loglevel=INFO"
     links:
       - cache
-      - es
+      - search
       - mq
       - db
     environment:
@@ -143,10 +144,10 @@ services:
     extends:
       file: docker-services.yml
       service: mq
-  es:
+  search:
     extends:
       file: docker-services.yml
-      service: es
+      service: search
 volumes:
   static_data:
   uploaded_data:

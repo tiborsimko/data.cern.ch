@@ -3,7 +3,7 @@ on:
   push:
     branches: uitest
   pull_request:
-    branches: [master, ant, faser]
+    branches: [master, next]
     paths:
       - "ui/**"
       - ".github/workflows/ui-test.yml"

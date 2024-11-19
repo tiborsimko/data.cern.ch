@@ -1,12 +1,12 @@
 name: UI test
 on:
   push:
-    branches: [master, ant]
+    branches: [master, next]
     paths:
       - "ui/**"
       - ".github/workflows/ui-test.yml"
   pull_request:
-    branches: [master, ant, faser]
+    branches: [master, next]
     paths:
       - "ui/**"
       - ".github/workflows/ui-test.yml"

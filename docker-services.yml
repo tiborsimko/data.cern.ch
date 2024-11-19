@@ -27,7 +27,7 @@ services:
       - "INVENIO_CACHE_TYPE=redis"
       - "INVENIO_CELERY_BROKER_URL=amqp://guest:guest@mq:5672/"
       - "INVENIO_CELERY_RESULT_BACKEND=redis://cache:6379/2"
-      - "INVENIO_SEARCH_ELASTIC_HOSTS=['es:9200']"
+      - "INVENIO_SEARCH_HOSTS=['search:9200']"
       - "INVENIO_SECRET_KEY=CHANGE_ME"
       - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://cap:cap@db/cap"
       - "INVENIO_WSGI_PROXIES=2"
@@ -78,26 +78,34 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-  es:
-    image: webhippie/elasticsearch:5.6
-    restart: "always"
+  search:
+    image: opensearchproject/opensearch:2.2.0
     environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - node.name=search
+      - discovery.seed_hosts=search
+      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+      - discovery.type=single-node
+      - "DISABLE_SECURITY_PLUGIN=true"
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
     ports:
       - "9200:9200"
-      - "9300:9300"
-  kibana:
-    image: kibana:5.6.4
+      - "9600:9600"
+  search-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.2.0
+    ports:
+      - 5601:5601
+    expose:
+      - "5601"
     environment:
-      - "ELASTICSEARCH_URL=http://es:9200"
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports: ["5601:5601"]
+      - 'OPENSEARCH_HOSTS=["http://search:9200"]'
+      - "DISABLE_SECURITY_DASHBOARDS_PLUGIN=true"
   flower:
     image: mher/flower
     ports:

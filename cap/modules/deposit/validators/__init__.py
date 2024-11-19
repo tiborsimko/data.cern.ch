@@ -28,7 +28,8 @@ import os
 
 from flask import current_app
 from jsonschema._types import draft7_type_checker
-from jsonschema._utils import load_schema
+# from jsonschema._utils import load_schema
+from jsonschema_specifications import REGISTRY as SPECIFICATIONS
 from jsonschema.validators import Draft7Validator, create, extend
 
 from cap.modules.deposit.validators.services import fetch_data_from_url
@@ -75,7 +76,9 @@ minimal_validators = {
 }
 
 MinimalValidator = create(
-    load_schema('draft7'),
+    SPECIFICATIONS.contents(
+        "http://json-schema.org/draft-07/schema#",
+    ),
     validators=minimal_validators,
     type_checker=draft7_type_checker,
     version="draft7-clean",

@@ -2,7 +2,7 @@ import tarfile
 
 import responses
 from invenio_files_rest.models import ObjectVersion
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from cap.modules.repos.errors import GitObjectNotFound
 from cap.modules.repos.models import GitSnapshot, GitWebhookSubscriber
@@ -75,8 +75,7 @@ def test_download_repo_file(deposit, file_tar):
         content_type='text/plain',
         headers={
             'Content-Length': '18',
-            'Content-Encoding': 'gzip',
-            'Content-Type': 'text/plain; charset=utf-8'
+            'Content-Encoding': 'gzip'
         },
         stream=True,
         status=200)
@@ -110,8 +109,7 @@ def test_download_repo_file_when_failed_creates_empty_file_object_with_failed_ta
         content_type='text/plain',
         headers={
             'Content-Length': '18',
-            'Content-Encoding': 'gzip',
-            'Content-Type': 'text/plain; charset=utf-8'
+            'Content-Encoding': 'gzip'
         },
         stream=True,
         status=400)

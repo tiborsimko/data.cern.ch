@@ -25,7 +25,7 @@
 
 from __future__ import absolute_import, print_function
 
-from elasticsearch_dsl.query import Q
+from opensearch_dsl.query import Q
 from flask import current_app, request
 from flask_login import current_user
 from invenio_records_rest.errors import InvalidQueryRESTError
@@ -56,7 +56,7 @@ def cap_search_factory(self, search, query_parser=None):
     :returns: Tuple with search instance and URL arguments.
     """
     def _default_parser(qstr=None, **kwargs):
-        """Use of the Q() from elasticsearch_dsl."""
+        """Use of the Q() from opensearch_dsl."""
         def _escape_qstr(qstr):
             return ''.join((ESCAPE_CHAR_MAP.get(char, char) for char in qstr))
 

@@ -2239,7 +2239,7 @@
     "settings":{
       "analysis":{
         "analyzer":{
-          "lowercase_whitespace_analyzer":{
+          "default":{
             "type":"custom",
             "tokenizer":"whitespace",
             "filter":[
@@ -2250,44 +2250,38 @@
       }
     },
     "mappings":{
-      "cms-stats-questionnaire-v0.0.1":{
-        "_all":{
-          "enabled":true,
-          "analyzer":"lowercase_whitespace_analyzer"
+      "properties":{
+        "next_deadline_date": {
+          "type": "date"
         },
-        "properties":{
-          "next_deadline_date": {
-            "type": "date"
-          },
-          "analysis_context": {
-            "type": "object",
-            "properties": {
-              "next_deadline_date": {
-                "type": "date",
-                "format": "yyyy-MM-dd",
-                "copy_to": "next_deadline_date"
-              }
+        "analysis_context": {
+          "type": "object",
+          "properties": {
+            "next_deadline_date": {
+              "type": "date",
+              "format": "yyyy-MM-dd",
+              "copy_to": "next_deadline_date"
             }
-          },
-          "ml_app_use": {
-            "properties": {
-              "development": {
-                "properties": {
-                  "dev": {
-                    "properties": {
-                      "cross_validation": {
-                        "properties": {
-                          "comments_no": {
-                            "properties": {
-                              "training": {
-                                "type": "string"
-                              },
-                              "testing": {
-                                "type": "string"
-                              },
-                              "validation": {
-                                "type": "string"
-                              }
+          }
+        },
+        "ml_app_use": {
+          "properties": {
+            "development": {
+              "properties": {
+                "dev": {
+                  "properties": {
+                    "cross_validation": {
+                      "properties": {
+                        "comments_no": {
+                          "properties": {
+                            "training": {
+                              "type": "text"
+                            },
+                            "testing": {
+                              "type": "text"
+                            },
+                            "validation": {
+                              "type": "text"
                             }
                           }
                         }
@@ -2297,57 +2291,57 @@
                 }
               }
             }
-          },
-          "_collection": {
-            "type": "object",
-            "properties": {
-                "fullname": {
-                    "type": "keyword"
-                },
-                "name": {
-                    "type": "keyword"
-                },
-                "version": {
-                    "type": "keyword"
-                }
-            }
-          },
-          "_deposit":{
-            "type":"object",
-            "properties":{
-              "created_by":{
-                "type":"integer",
-                "copy_to":"created_by"
-              },
-              "status":{
-                "type":"text",
-                "fields":{
-                  "keyword":{
-                    "type":"keyword"
-                  }
-                },
-                "copy_to":"status"
-              }
-            }
-          },
-          "_experiment":{
-            "type":"text"
-          },
-          "_fetched_from": {
-            "type": "text",
-            "copy_to": "fetched_from"
-          },
-          "_created":{
-            "type":"date",
-            "copy_to":"created"
-          },
-          "_updated":{
-            "type":"date",
-            "copy_to":"updated"
-          },
-          "created":{
-            "type":"date"
           }
+        },
+        "_collection": {
+          "type": "object",
+          "properties": {
+              "fullname": {
+                  "type": "keyword"
+              },
+              "name": {
+                  "type": "keyword"
+              },
+              "version": {
+                  "type": "keyword"
+              }
+          }
+        },
+        "_deposit":{
+          "type":"object",
+          "properties":{
+            "created_by":{
+              "type":"integer",
+              "copy_to":"created_by"
+            },
+            "status":{
+              "type":"text",
+              "fields":{
+                "keywords":{
+                  "type":"keyword"
+                }
+              },
+              "copy_to":"status"
+            }
+          }
+        },
+        "_experiment":{
+          "type":"text"
+        },
+        "_fetched_from": {
+          "type": "text",
+          "copy_to": "fetched_from"
+        },
+        "_created":{
+          "type":"date",
+          "copy_to":"created"
+        },
+        "_updated":{
+          "type":"date",
+          "copy_to":"updated"
+        },
+        "created":{
+          "type":"date"
         }
       }
     }

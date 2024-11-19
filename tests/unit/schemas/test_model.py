@@ -235,11 +235,9 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
         is_indexed=True,
         record_mapping={
             'mappings': {
-                'doc': {
-                    'properties': {
-                        "title": {
-                            "type": "text"
-                        }
+                'properties': {
+                    "title": {
+                        "type": "text"
                     }
                 }
             }
@@ -247,11 +245,9 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
         deposit_mapping={
             'mappings':
                 {
-                    'doc': {
-                        'properties': {
-                            "keyword": {
-                                "type": "keyword"
-                            }
+                    'properties': {
+                        "keyword": {
+                            "type": "keyword"
                         }
                     }
                 }
@@ -270,11 +266,9 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
         'records-cms-schema-v1.0.0':
             {
                 'mappings': {
-                    'doc': {
-                        'properties': {
-                            'title': {
-                                'type': 'text'
-                            }
+                    'properties': {
+                        'title': {
+                            'type': 'text'
                         }
                     }
                 }
@@ -286,11 +280,9 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
             {
                 'mappings':
                     {
-                        'doc': {
-                            'properties': {
-                                'keyword': {
-                                    'type': 'keyword'
-                                }
+                        'properties': {
+                            'keyword': {
+                                'type': 'keyword'
                             }
                         }
                     }

@@ -25,7 +25,7 @@
 
 import subprocess
 
-from mock import patch
+from unittest.mock import patch
 from pytest import raises
 
 from cap.modules.experiments.utils.common import kinit

@@ -14,6 +14,12 @@ services:
       service: lb
     links:
       - frontend
+  cypress:
+    image: "cypress/included:6.3.0"
+    # entrypoint: cypress run --headless --browser chrome
+    environment:
+      - CYPRESS_BASE_URL=https://nginx
+      - CYPRESS_baseUrl=https://nginx
   # Frontend
   frontend:
     extends:
@@ -38,7 +44,7 @@ services:
       - ./var/data:/var/data
     links:
       - cache
-      - es
+      - search
       - mq
       - db
   # API Files Application
@@ -55,7 +61,7 @@ services:
       - ./var/data:/var/data
     links:
       - cache
-      - es
+      - search
       - mq
       - db
   # Worker
@@ -64,11 +70,11 @@ services:
       file: docker-services.yml
       service: app
     restart: "always"
-    command: "celery worker -A cap.celery --loglevel=INFO"
+    command: "celery --app=cap.celery worker --loglevel=INFO"
     image: cap-worker
     links:
       - cache
-      - es
+      - search
       - mq
       - db
   # Monitoring
@@ -91,9 +97,9 @@ services:
     extends:
       file: docker-services.yml
       service: mq
-  es:
+  search:
     extends:
       file: docker-services.yml
-      service: es
+      service: search
 volumes:
   static_data:

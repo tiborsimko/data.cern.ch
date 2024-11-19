@@ -125,9 +125,8 @@ def actions_from_type(_type, perms):
 
 
 def get_default_mapping(name, version):
-    mapping_name = f"{name}-v{version}"
     default_mapping = {"mappings": {}}
-    collectiion_mapping = {
+    collection_mapping = {
         "properties": {
             "_collection": {
                 "type": "object",
@@ -139,7 +138,7 @@ def get_default_mapping(name, version):
             }
         }
     }
-    default_mapping["mappings"][mapping_name] = collectiion_mapping
+    default_mapping["mappings"] = collection_mapping
     return default_mapping
 
 

@@ -111,7 +111,6 @@ def prepare_record(
     json=None,
     record=None,
     index=None,
-    doc_type=None,
     arguments=None,
     **kwargs
 ):
@@ -122,8 +121,7 @@ def prepare_record(
         version = schema.version
         fullname = schema.fullname or ""
     except JSONSchemaNotFound:
-        name, version = doc_type.rsplit("-v", 1)
-        fullname = name
+        abort(404)
 
     collection = {"name": name, "version": version, "fullname": fullname}
     json["_collection"] = collection

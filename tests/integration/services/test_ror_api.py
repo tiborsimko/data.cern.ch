@@ -28,7 +28,7 @@ from __future__ import absolute_import, print_function
 import json
 
 from invenio_rest.errors import RESTException
-from mock import patch
+from unittest.mock import patch
 
 from cap.modules.experiments.errors import ExternalAPIException
 

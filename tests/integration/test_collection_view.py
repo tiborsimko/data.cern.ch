@@ -31,7 +31,7 @@ from invenio_search import current_search
 from pytest import mark
 
 
-def test_collection_view_returns_user_drafts(client, users, create_deposit,
+def test_collection_view_returns_user_drafts(location, client, users, create_deposit,
                                             auth_headers_for_user):
     my_deposit = create_deposit(users['lhcb_user'], 'lhcb', version="0.2.0")
     user_published_deposit = create_deposit(users['lhcb_user'],

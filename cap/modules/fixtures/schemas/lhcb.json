@@ -384,7 +384,7 @@
     "settings": {
       "analysis": {
         "analyzer": {
-          "lowercase_whitespace_analyzer": {
+          "default": {
             "type": "custom",
             "tokenizer": "whitespace",
             "filter": ["lowercase"]
@@ -393,152 +393,146 @@
       }
     },
     "mappings": {
-      "lhcb-v0.0.1": {
-        "_all": {
-          "enabled": true,
-          "analyzer": "lowercase_whitespace_analyzer"
+      "properties": {
+        "_deposit": {
+          "type": "object",
+          "properties": {
+            "created_by": {
+              "type": "integer",
+              "copy_to": "created_by"
+            },
+            "status": {
+              "type": "text",
+              "fields": {
+                "keywords": {
+                  "type": "keyword"
+                }
+              },
+              "copy_to": "status"
+            }
+          }
         },
-        "properties": {
-          "_deposit": {
-            "type": "object",
-            "properties": {
-              "created_by": {
-                "type": "integer",
-                "copy_to": "created_by"
+        "_collection": {
+          "type": "object",
+          "properties": {
+              "fullname": {
+                  "type": "keyword"
               },
-              "status": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword"
-                  }
-                },
-                "copy_to": "status"
+              "name": {
+                  "type": "keyword"
+              },
+              "version": {
+                  "type": "keyword"
               }
-            }
-          },
-          "_collection": {
-            "type": "object",
-            "properties": {
-                "fullname": {
-                    "type": "keyword"
-                },
+          }
+        },
+        "_experiment": {
+          "type": "text"
+        },
+        "_fetched_from": {
+          "type": "text",
+          "copy_to": "fetched_from"
+        },
+        "_user_edited": {
+          "type": "boolean",
+          "copy_to": "user_edited"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
+        },
+        "created": {
+          "type": "date"
+        },
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
+        },
+        "keywords": {
+          "type": "keyword"
+        },
+        "basic_info": {
+          "type": "object",
+          "properties": {
+            "analysis_proponents": {
+              "type": "object",
+              "properties": {
                 "name": {
-                    "type": "keyword"
+                  "type": "text",
+                  "copy_to": "researcher"
                 },
-                "version": {
-                    "type": "keyword"
+                "orcid": {
+                  "type": "keyword",
+                  "copy_to": "researcher"
                 }
-            }
-          },
-          "_experiment": {
-            "type": "text"
-          },
-          "_fetched_from": {
-            "type": "text",
-            "copy_to": "fetched_from"
-          },
-          "_user_edited": {
-            "type": "boolean",
-            "copy_to": "user_edited"
-          },
-          "_created": {
-            "type": "date",
-            "copy_to": "created"
-          },
-          "created": {
-            "type": "date"
-          },
-          "_updated": {
-            "type": "date",
-            "copy_to": "updated"
-          },
-          "keyword": {
-            "type": "keyword"
-          },
-          "basic_info": {
-            "type": "object",
-            "properties": {
-              "analysis_proponents": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "text",
-                    "copy_to": "researcher"
-                  },
-                  "orcid": {
-                    "type": "keyword",
-                    "copy_to": "researcher"
-                  }
+              }
+            },
+            "reviewers": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "text",
+                  "copy_to": "reviewer"
+                },
+                "orcid": {
+                  "type": "keyword",
+                  "copy_to": "reviewer"
                 }
-              },
-              "reviewers": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "text",
-                    "copy_to": "reviewer"
-                  },
-                  "orcid": {
-                    "type": "keyword",
-                    "copy_to": "reviewer"
-                  }
-                }
-              },
-              "review_egroup": {
-                "type": "keyword",
-                "copy_to": "reviewer"
-              },
-              "institutes": {
-                "type": "keyword",
-                "copy_to": "institute"
-              },
-              "keywords": {
-                "type": "keyword",
-                "copy_to": "keyword"
               }
+            },
+            "review_egroup": {
+              "type": "keyword",
+              "copy_to": "reviewer"
+            },
+            "institutes": {
+              "type": "keyword",
+              "copy_to": "institute"
+            },
+            "keywords": {
+              "type": "keyword",
+              "copy_to": "keyword"
             }
-          },
-          "ntuple_userdst_production": {
-            "type": "object",
-            "properties": {
-              "input_dataset": {
-                "type": "keyword",
-                "copy_to": "dataset"
-              }
+          }
+        },
+        "ntuple_userdst_production": {
+          "type": "object",
+          "properties": {
+            "input_dataset": {
+              "type": "keyword",
+              "copy_to": "dataset"
             }
-          },
-          "stripping_turbo_selection": {
-            "type": "object",
-            "properties": {
-              "bookkeping_locations": {
-                "type": "keyword",
-                "copy_to": "bookkeeping"
-              },
-              "stripping_turbo_line": {
-                "type": "keyword",
-                "copy_to": "stripping_line"
-              }
+          }
+        },
+        "stripping_turbo_selection": {
+          "type": "object",
+          "properties": {
+            "bookkeping_locations": {
+              "type": "keyword",
+              "copy_to": "bookkeeping"
+            },
+            "stripping_turbo_line": {
+              "type": "keyword",
+              "copy_to": "stripping_line"
             }
-          },
-          "additional_resources": {
-            "type": "object",
-            "properties": {
-              "publications": {
-                "type": "object",
-                "properties": {
-                  "analysis_number": {
-                    "type": "keyword",
-                    "copy_to": "ananote"
-                  },
-                  "arxiv_id": {
-                    "type": "keyword",
-                    "copy_to": "arxiv"
-                  },
-                  "twiki": {
-                    "type": "keyword",
-                    "copy_to": "twiki"
-                  }
+          }
+        },
+        "additional_resources": {
+          "type": "object",
+          "properties": {
+            "publications": {
+              "type": "object",
+              "properties": {
+                "analysis_number": {
+                  "type": "keyword",
+                  "copy_to": "ananote"
+                },
+                "arxiv_id": {
+                  "type": "keyword",
+                  "copy_to": "arxiv"
+                },
+                "twiki": {
+                  "type": "keyword",
+                  "copy_to": "twiki"
                 }
               }
             }

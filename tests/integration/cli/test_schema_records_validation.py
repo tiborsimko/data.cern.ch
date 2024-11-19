@@ -105,6 +105,19 @@ def test_validate_with_schema_url_correct_record(
     assert 'No errors found in record' in res.output
 
 
+def test_validate_with_schema_url_correct_record_published(
+        app, db, es, cli_runner, users, create_schema, create_deposit):
+    create_schema('test', experiment='CMS')
+    create_deposit(users['cms_user'], 'test', publish=True)
+
+    res = cli_runner(
+        'fixtures validate -u https://analysispreservation.cern.ch/schemas/records/test-v1.0.0.json -s published')
+
+    assert res.exit_code == 0
+    assert '1 record(s) of test found.' in res.output
+    assert 'No errors found in record' in res.output
+
+
 def test_validate_with_ana_type_correct_record(
         app, db, es, cli_runner, script_info, users, create_schema, create_deposit):
     create_schema('test', experiment='CMS')

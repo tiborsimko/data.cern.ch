@@ -735,7 +735,7 @@ class CAPDeposit(Deposit, Reviewable, CERNEgroupMixin):
         * create RecordMetadata instance
         * create bucket for storing deposit files
         * set owner permissions in the db
-        * index deposit in elasticsearch
+        * index deposit in opensearch
         """
         if current_user and current_user.is_authenticated:
             owner = current_user

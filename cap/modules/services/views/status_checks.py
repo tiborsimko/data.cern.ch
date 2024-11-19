@@ -128,7 +128,7 @@ status_checks = [
         'args': {'service': 'search'},
         'should_return': {'message': 'OK'},
         'service': 'cap_es',
-        'log': 'Checking ElasticSearch API...',
+        'log': 'Checking OpenSearch API...',
         'category': 'Internal Services',
     },
     {

@@ -1,5 +1,5 @@
 from github import GithubException, UnknownObjectException
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from pytest import raises
 
 from cap.modules.repos.errors import (GitError, GitIntegrationError,
@@ -11,7 +11,7 @@ from cap.modules.repos.github_api import Github, GithubAPI
 @patch.object(
     Github, 'get_repo',
     Mock(
-        side_effect=UnknownObjectException(404, data={'message': 'Not Found'}))
+        side_effect=UnknownObjectException(404, headers={}, data={'message': 'Not Found'}))
 )
 def test_github_api_when_project_doesnt_exist_or_no_access():
     with raises(GitObjectNotFound):
@@ -151,7 +151,7 @@ def test_github_api_with_default_branch_when_no_branch_nor_sha_given(
 def test_github_api_with_sha(m_get_repo):
     class MockProject:
         def get_branch(self, name):
-            raise GithubException(404, data={'message': 'Branch not found'})
+            raise GithubException(404, headers={}, data={'message': 'Branch not found'})
 
         def get_commit(self, sha):
             mock = Mock()
@@ -179,10 +179,10 @@ def test_github_api_when_commit_or_branch_with_sha_doesnt_exist_raises_GitObject
     m_get_repo):
     class MockProject:
         def get_branch(self, name):
-            raise GithubException(404, data={'message': 'Branch not found'})
+            raise GithubException(404, headers={}, data={'message': 'Branch not found'})
 
         def get_commit(self, sha):
-            raise GithubException(422,
+            raise GithubException(422, headers={},
                                   data={'message': 'No commit found for SHA:'})
 
     m_get_repo.return_value = MockProject()
@@ -193,7 +193,7 @@ def test_github_api_when_commit_or_branch_with_sha_doesnt_exist_raises_GitObject
 
 @patch.object(Github, 'get_repo',
               Mock(side_effect=UnknownObjectException(
-                  status=404, data={'message': 'Not Found'})))
+                  status=404, headers={}, data={'message': 'Not Found'})))
 def test_github_api_when_repostiory_doesnt_exist_or_no_access_raises_GitObjectNotFound(
 ):
     with raises(GitObjectNotFound):
@@ -210,10 +210,10 @@ def test_github_api_when_just_created_repo_without_any_branches_raises_GitObject
 
         def get_branch(self, name):
             assert name == 'def-branch'
-            raise GithubException(404, data={'message': 'Branch not found'})
+            raise GithubException(404, headers={}, data={'message': 'Branch not found'})
 
         def get_commit(self, sha):
-            raise GithubException(422,
+            raise GithubException(422, headers={},
                                   data={'message': 'No commit found for SHA:'})
 
     m_get_repo.return_value = MockProject()
@@ -280,7 +280,7 @@ def test_github_api_get_file_download_when_file_does_not_exist_raises_GitObjectN
             return Mock()
 
         def get_file_contents(self, filepath, ref):
-            raise UnknownObjectException(404, data={'message': 'Not Found'})
+            raise UnknownObjectException(404, headers={}, data={'message': 'Not Found'})
 
     m_get_repo.return_value = MockProject()
 
@@ -351,6 +351,7 @@ def test_github_api_create_webhook_when_webhook_already_exist_raises_GitIntegrat
         def create_hook(self, name, config, events, active):
             raise GithubException(
                 422,
+                headers={},
                 data={
                     'message': 'Validation Failed',
                     'errors': [{
@@ -383,7 +384,7 @@ def test_github_api_create_webhook_when_no_permissions_to_create_a_webhook_raise
             return mock
 
         def create_hook(self, name, config, events, active):
-            raise UnknownObjectException(404, data={'message': 'Not Found'})
+            raise UnknownObjectException(404, headers={}, data={'message': 'Not Found'})
 
     m_get_repo.return_value = MockProject()
 
@@ -421,7 +422,7 @@ def test_github_api_delete_webhook_when_hook_doesnt_exist_or_no_permission_raise
 
         def get_hook(self, hook_id):
             assert hook_id == 12345
-            raise UnknownObjectException(404, data={'message': 'Not Found'})
+            raise UnknownObjectException(404, headers={}, data={'message': 'Not Found'})
 
     m_get_repo.return_value = MockProject()
 
@@ -483,7 +484,7 @@ def test_github_api_ping_webhook_when_hook_doesnt_exist_raises_GitObjectNotFound
 
         def get_hook(self, hook_id):
             assert hook_id == 123
-            raise UnknownObjectException(404, data={'message': 'Not Found'})
+            raise UnknownObjectException(404, headers={}, data={'message': 'Not Found'})
 
     m_get_repo.return_value = MockProject()
 

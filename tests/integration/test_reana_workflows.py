@@ -27,7 +27,7 @@
 from __future__ import absolute_import, print_function
 
 import json
-from mock import patch
+from unittest.mock import patch
 from pytest import mark
 
 from reana_client.errors import FileDeletionError

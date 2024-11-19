@@ -26,7 +26,7 @@ from __future__ import absolute_import, print_function
 
 import responses
 from flask import current_app
-from mock import patch
+from unittest.mock import patch
 
 
 @responses.activate

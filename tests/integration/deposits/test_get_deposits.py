@@ -276,6 +276,7 @@ def test_get_deposit_with_default_serializer(
                     'key': file.key,
                     'size': file.file.size,
                     'version_id': str(file.version_id),
+                    'file_id': str(file.file.id),
                 }
             ],
             'is_owner': True,
@@ -341,8 +342,8 @@ def test_get_deposits_with_correct_search_links(
 
     assert resp.status_code == 200
     assert resp.json['links'] == {
-        'self': 'http://analysispreservation.cern.ch/api/deposits/?page=1&size=10',
-        'next': 'http://analysispreservation.cern.ch/api/deposits/?page=2&size=10',
+        'self': 'http://analysispreservation.cern.ch/api/deposits/?size=10&page=1',
+        'next': 'http://analysispreservation.cern.ch/api/deposits/?size=10&page=2',
     }
 
 
@@ -580,90 +581,86 @@ def test_get_sorted_results_by_stage_strings(
 
     deposit_mapping_1 = {
         "mappings" : {
-            "test-analysis-v1.0.0": {
-                "properties": {
-                    "_collection": {
-                        "type": "object",
-                        "properties": {
-                            "fullname": {
-                                "type": "keyword"
-                            },
-                            "name": {
-                                "type": "keyword"
-                            },
-                            "version": {
-                                "type": "keyword"
+            "properties": {
+                "_collection": {
+                    "type": "object",
+                    "properties": {
+                        "fullname": {
+                            "type": "keyword"
+                        },
+                        "name": {
+                            "type": "keyword"
+                        },
+                        "version": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                "analysis_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "analysis_sub_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "initial": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "object",
+                            "properties": {
+                                "main_status": {
+                                    "type": "keyword",
+                                    "copy_to": "analysis_stage"
+                                },
+                                "sub_status": {
+                                    "type": "keyword",
+                                    "copy_to": "analysis_sub_stage"
+                                }		
                             }
                         }
-                    },
-                    "analysis_stage": {
-						"type": "keyword",
-						"store": True
-					},
-					"analysis_sub_stage": {
-						"type": "keyword",
-						"store": True
-					},
-                    "initial": {
-                        "type": "object",
-                        "properties": {
-                            "status": {
-                                "type": "object",
-                                "properties": {
-									"main_status": {
-										"type": "keyword",
-										"copy_to": "analysis_stage"
-									},
-									"sub_status": {
-										"type": "keyword",
-										"copy_to": "analysis_sub_stage"
-									}		
-								}
-                            }
-                        }
-                    },
-                }
+                    }
+                },
             }
         }
     }
 
     deposit_mapping_2 = {
         "mappings" : {
-            "test-ana-v1.0.0": {
-                "properties": {
-                    "_collection": {
-                        "type": "object",
-                        "properties": {
-                            "fullname": {
-                                "type": "keyword"
-                            },
-                            "name": {
-                                "type": "keyword"
-                            },
-                            "version": {
-                                "type": "keyword"
-                            }
+            "properties": {
+                "_collection": {
+                    "type": "object",
+                    "properties": {
+                        "fullname": {
+                            "type": "keyword"
+                        },
+                        "name": {
+                            "type": "keyword"
+                        },
+                        "version": {
+                            "type": "keyword"
                         }
-                    },
-                    "analysis_stage": {
-						"type": "keyword",
-						"store": True
-					},
-					"analysis_sub_stage": {
-						"type": "keyword",
-						"store": True
-					},
-                    "stat": {
-                        "type": "object",
-                        "properties": {
-                            "main_status": {
-                                "type": "keyword",
-                                "copy_to": "analysis_stage"
-                            },
-                            "sub_status": {
-                                "type": "keyword",
-                                "copy_to": "analysis_sub_stage"
-                            }
+                    }
+                },
+                "analysis_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "analysis_sub_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "stat": {
+                    "type": "object",
+                    "properties": {
+                        "main_status": {
+                            "type": "keyword",
+                            "copy_to": "analysis_stage"
+                        },
+                        "sub_status": {
+                            "type": "keyword",
+                            "copy_to": "analysis_sub_stage"
                         }
                     }
                 }
@@ -843,7 +840,7 @@ def test_get_sorted_results_by_stage_strings(
 
     resp = client.get('/deposits?q=&sort=analysis_stage',headers=headers+json_headers)
     assert resp.status_code == 200
-    assert resp.json['hits']['total'] == 4
+    assert resp.json['hits']['total'] == 5
 
     # Test with schema having no status
     deposit_mapping_6 = get_default_mapping('test-status', "1.0.0")
@@ -864,7 +861,7 @@ def test_get_sorted_results_by_stage_strings(
 
     resp = client.get('/deposits?q=&sort=analysis_stage',headers=headers+json_headers)
     assert resp.status_code == 200
-    assert resp.json['hits']['total'] == 4
+    assert resp.json['hits']['total'] == 6
 
 
 def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
@@ -1017,28 +1014,26 @@ def test_get_deposits_with_range_query(
                 }
             },
             'mappings': {
-                'test-schema-v1.0.0': {
-                    'properties': {
-                        'next_deadline_date': {'type': 'date'},
-                        "_collection": {
-                            "type": "object",
-                            "properties": {
-                                "fullname": {"type": "keyword"},
-                                "name": {"type": "keyword"},
-                                "version": {"type": "keyword"},
-                            },
+                'properties': {
+                    'next_deadline_date': {'type': 'date'},
+                    "_collection": {
+                        "type": "object",
+                        "properties": {
+                            "fullname": {"type": "keyword"},
+                            "name": {"type": "keyword"},
+                            "version": {"type": "keyword"},
                         },
-                        "analysis_context": {
-                            "type": "object",
-                            "properties": {
-                                'next_deadline_date': {
-                                    'type': 'date',
-                                    "format": "yyyy-MM-dd",
-                                    "copy_to": "next_deadline_date",
-                                }
-                            },
+                    },
+                    "analysis_context": {
+                        "type": "object",
+                        "properties": {
+                            'next_deadline_date': {
+                                'type': 'date',
+                                "format": "yyyy-MM-dd",
+                                "copy_to": "next_deadline_date",
+                            }
                         },
-                    }
+                    },
                 }
             },
         },
@@ -1546,8 +1541,8 @@ def test_get_deposit_with_form_json_serializer_x_cap_field(
     assert resp.status_code == 200
 
     assert resp.json['x_cap_permission'] == [
-        {"path": ["properties", "title"], "value": {"users": [example_user.email]}},
         {"path": ["properties", "date"], "value": {"users": ["test_user@cern.ch"]}},
+        {"path": ["properties", "title"], "value": {"users": [example_user.email]}},
     ]
     assert resp.json['schemas']['schema']['properties']['date']['readOnly'] == True
     assert resp.json['schemas']['schema']['properties']['title'].get('readOnly') == None

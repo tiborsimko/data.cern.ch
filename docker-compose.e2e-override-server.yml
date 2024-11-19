@@ -16,7 +16,7 @@ services:
       - ./cap:/opt/invenio/src/cap
     links:
       - cache
-      - es
+      - search
       - mq
       - db
 

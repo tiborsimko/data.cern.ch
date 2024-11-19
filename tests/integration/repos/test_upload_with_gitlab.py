@@ -28,7 +28,7 @@ from __future__ import absolute_import, print_function
 import json
 import tarfile
 import responses
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from pytest import mark
 
 from gitlab.exceptions import GitlabGetError

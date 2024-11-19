@@ -28,7 +28,7 @@ from __future__ import absolute_import, print_function
 from flask import current_app
 from werkzeug.datastructures import MultiDict
 
-from elasticsearch_dsl import Q
+from opensearch_dsl import Q
 from invenio_records_rest.facets import (_create_filter_dsl, _post_filter,
                                          _query_filter)
 

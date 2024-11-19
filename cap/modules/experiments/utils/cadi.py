@@ -26,10 +26,10 @@
 from itertools import islice
 
 import requests
-from elasticsearch_dsl import Q
 from flask import current_app, abort
 from invenio_db import db
 from invenio_search import RecordsSearch
+from opensearch_dsl import Q
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.errors import (DepositDoesNotExist,
@@ -261,7 +261,7 @@ def get_uuids_with_same_cadi_id(cadi_id):
         raise DepositDoesNotExist
     else:
         uuids = [
-            r.get("_source", {}).get("_deposit", {}).get("id")
+            r._source._deposit.id
             for r in res
         ]
 

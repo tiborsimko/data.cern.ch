@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2018 CERN.
+# Copyright (C) 2023 CERN.
 #
 # CERN Analysis Preservation is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -45,11 +45,11 @@ RUN echo "" >> .env
 RUN echo "PIWIK_URL=$CAP_PIWIK_URL" >> .env
 
 RUN if [[ $PIWIK_ENV == "dev" ]]; then \
-        echo "PIWIK_SITEID=$CAP_PIWIK_SITEID_DEV" >> .env; \
+    echo "PIWIK_SITEID=$CAP_PIWIK_SITEID_DEV" >> .env; \
     fi
 
 RUN if [[ $PIWIK_ENV == "prod" ]]; then \
-        echo "PIWIK_SITEID=$CAP_PIWIK_SITEID_PROD" >> .env; \
+    echo "PIWIK_SITEID=$CAP_PIWIK_SITEID_PROD" >> .env; \
     fi
 
 
@@ -59,7 +59,6 @@ WORKDIR $WORKING_DIR/ui/
 
 RUN yarn config set cache ~/.my-yarn-cache-dir
 RUN yarn install
-RUN yarn upgrade
 RUN yarn build
 
 RUN cp -rfp ./dist/* $NGINX_HTML_DIR

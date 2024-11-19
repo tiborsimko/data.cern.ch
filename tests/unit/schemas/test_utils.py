@@ -45,22 +45,18 @@ def test_add_schema_from_fixture_when_schema_does_not_exist_create_new_one(
                 record_options={'title': 'record_options'},
                 record_mapping={
                     'mappings': {
-                        'doc': {
-                            'properties': {
-                                "title": {
-                                    "type": "text"
-                                }
+                        'properties': {
+                            "title": {
+                                "type": "text"
                             }
                         }
                     }
                 },
                 deposit_mapping={
                     'mappings': {
-                        'doc': {
-                            'properties': {
-                                "keyword": {
-                                    "type": "keyword"
-                                }
+                        'properties': {
+                            "keyword": {
+                                "type": "keyword"
                             }
                         }
                     }
@@ -96,22 +92,18 @@ def test_add_schema_from_fixture_when_schema_already_exist_updates_json_for_sche
                         record_options={'title': 'record_options'},
                         record_mapping={
                             'mappings': {
-                                'doc': {
-                                    'properties': {
-                                        "title": {
-                                            "type": "text"
-                                        }
+                                'properties': {
+                                    "title": {
+                                        "type": "text"
                                     }
                                 }
                             }
                         },
                         deposit_mapping={
                             'mappings': {
-                                'doc': {
-                                    'properties': {
-                                        "keyword": {
-                                            "type": "keyword"
-                                        }
+                                'properties': {
+                                    "keyword": {
+                                        "type": "keyword"
                                     }
                                 }
                             }
@@ -166,7 +158,8 @@ def test_get_indexed_schemas_for_user_when_latest(app, db, users):
     db.session.add(latest_schema2)
     db.session.commit()
 
-    login_user(users['cms_user'])
+    with app.test_request_context():
+        login_user(users['cms_user'])
 
     from cap.modules.schemas.imp import get_indexed_schemas_for_user
 

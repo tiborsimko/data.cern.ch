@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Tests for mail."""
-from mock import patch
+from unittest.mock import patch
 from cap.modules.mail.users import get_all_users, get_users_by_record, \
     get_users_by_experiment
 from cap.modules.mail.custom.recipients import get_owner, get_submitter

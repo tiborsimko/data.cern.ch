@@ -75,7 +75,7 @@
     "settings": {
       "analysis": {
         "analyzer": {
-          "lowercase_whitespace_analyzer": {
+          "default": {
             "type": "custom",
             "tokenizer": "whitespace",
             "filter": ["lowercase"]
@@ -84,66 +84,60 @@
       }
     },
     "mappings": {
-      "alice-analysis-v0.0.1": {
-        "_all": {
-          "enabled": true,
-          "analyzer": "lowercase_whitespace_analyzer"
-        },
-        "properties": {
-          "_deposit": {
-            "type": "object",
-            "properties": {
-              "created_by": {
-                "type": "integer",
-                "copy_to": "created_by"
-              },
-              "status": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword"
-                  }
-                },
-                "copy_to": "status"
-              }
-            }
-          },
-          "_collection": {
-            "type": "object",
-            "properties": {
-                "fullname": {
-                    "type": "keyword"
-                },
-                "name": {
-                    "type": "keyword"
-                },
-                "version": {
-                    "type": "keyword"
+      "properties": {
+        "_deposit": {
+          "type": "object",
+          "properties": {
+            "created_by": {
+              "type": "integer",
+              "copy_to": "created_by"
+            },
+            "status": {
+              "type": "text",
+              "fields": {
+                "keywords": {
+                  "type": "keyword"
                 }
+              },
+              "copy_to": "status"
             }
-          },
-          "_experiment": {
-            "type": "text"
-          },
-          "_fetched_from": {
-            "type": "text",
-            "copy_to": "fetched_from"
-          },
-          "_user_edited": {
-            "type": "boolean",
-            "copy_to": "user_edited"
-          },
-          "_created": {
-            "type": "date",
-            "copy_to": "created"
-          },
-          "_updated": {
-            "type": "date",
-            "copy_to": "updated"
-          },
-          "created": {
-            "type": "date"
           }
+        },
+        "_collection": {
+          "type": "object",
+          "properties": {
+              "fullname": {
+                  "type": "keyword"
+              },
+              "name": {
+                  "type": "keyword"
+              },
+              "version": {
+                  "type": "keyword"
+              }
+          }
+        },
+        "_experiment": {
+          "type": "text"
+        },
+        "_fetched_from": {
+          "type": "text",
+          "copy_to": "fetched_from"
+        },
+        "_user_edited": {
+          "type": "boolean",
+          "copy_to": "user_edited"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
+        },
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
+        },
+        "created": {
+          "type": "date"
         }
       }
     }

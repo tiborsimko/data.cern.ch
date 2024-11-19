@@ -28,7 +28,7 @@ from uuid import uuid4
 
 from flask_security import login_user
 from invenio_access.models import ActionRoles, ActionUsers
-from mock import patch
+from unittest.mock import patch
 from pytest import mark, raises
 from sqlalchemy.exc import IntegrityError
 

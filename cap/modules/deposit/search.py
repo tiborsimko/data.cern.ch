@@ -24,7 +24,7 @@
 
 """Configuration for deposit search."""
 
-from elasticsearch_dsl import Q, TermsFacet
+from opensearch_dsl import Q, TermsFacet
 from flask import g
 from flask_login import current_user
 from flask_principal import RoleNeed
@@ -93,7 +93,6 @@ class CAPDepositSearch(RecordsSearch):
         """Configuration for deposit search."""
 
         index = 'deposits'
-        doc_types = None
         fields = ('*',)
         facets = {
             'status': TermsFacet(field='_deposit.status'),

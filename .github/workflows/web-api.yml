@@ -2,13 +2,13 @@ name: Backend tests
 
 on:
   push:
-    branches: [ master, ant ]
+    branches: [master, next]
     paths-ignore:
-    - 'ui/**'
+      - "ui/**"
   pull_request:
-    branches: [ master, ant, faser ]
+    branches: [master, next]
     paths-ignore:
-    - 'ui/**'
+      - "ui/**"
 
 jobs:
   lint-python-changes:
@@ -19,10 +19,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.9
+          python-version: "3.10"
 
       - name: Run darker
         run: |
+          pip install flake8
           pip install darker[isort]
           darker . --check -i -L flake8
 
@@ -40,20 +41,27 @@ jobs:
           POSTGRES_PASSWORD: cap
           POSTGRES_DB: cap
         ports:
-        - 5432:5432
+          - 5432:5432
       rabbitmq:
         image: rabbitmq:3-management
         ports:
           - 5672:5672
-      elasticsearchd:
-        image: docker.elastic.co/elasticsearch/elasticsearch:5.6.4
+      search:
+        image: opensearchproject/opensearch:2.2.0
         env:
+          node.name: search
           bootstrap.memory_lock: true
-          ES_JAVA_OPTS: -Xms1024m -Xmx1024m
+          OPENSEARCH_JAVA_OPTS: -Xms1024m -Xmx1024m
           discovery.type: single-node
-          xpack.security.enabled: false
+          discovery.seed_hosts: search
+          DISABLE_SECURITY_PLUGIN: true
         ports:
           - 9200:9200
+        options: >-
+          --health-cmd "curl http://localhost:9200/_cluster/health"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
 
     steps:
       - uses: actions/checkout@v2
@@ -61,19 +69,16 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.9
+          python-version: "3.10"
 
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev libkrb5-dev
+          sudo apt-get install libsasl2-dev python3-dev libldap2-dev libssl-dev libkrb5-dev
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip==20.2.4
-          pip install -r requirements.txt
-          pip install -e .[all,docs,tests,ldap]
-          pip install -r requirements-local-forks.txt
+          pip install .
 
       - name: Run integration and unit tests
         run: ./run-tests.sh --check-pytest

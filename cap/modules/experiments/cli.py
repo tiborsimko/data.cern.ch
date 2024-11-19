@@ -25,7 +25,7 @@
 import json
 
 import click
-from flask_cli import with_appcontext
+from flask.cli import with_appcontext
 from jsonschema.exceptions import ValidationError
 
 from invenio_db import db
@@ -69,7 +69,7 @@ def index_datasets(file):
         source = (dict(name=line.strip()) for line in fp)
         cache_das_datasets_in_es_from_file(source)
 
-    click.secho("Datasets indexed in Elasticsearch.", fg='green')
+    click.secho("Datasets indexed in Opensearch.", fg='green')
 
 
 @cms.command('index-triggers')
@@ -81,7 +81,7 @@ def index_triggers(file):
         source = (x for x in json.load(fp))
         cache_cms_triggers_in_es_from_file(source)
 
-    click.secho("Triggers indexed in Elasticsearch.", fg='green')
+    click.secho("Triggers indexed in Opensearch.", fg='green')
 
 
 def _questionnaire_data(data, title=None):

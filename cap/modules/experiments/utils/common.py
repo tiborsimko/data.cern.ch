@@ -31,7 +31,7 @@ from subprocess import CalledProcessError, check_output
 import cern_sso as cern_sso_old
 import cap.modules.experiments.utils.cern_sso as cern_sso_current
 from cachetools.func import ttl_cache
-from elasticsearch import helpers
+from opensearchpy import helpers
 from flask import current_app
 from invenio_search.proxies import current_search_client as es
 
@@ -155,7 +155,7 @@ def recreate_es_index_from_source(alias,
                 '_id': id_getter(obj) if id_getter else None,
                 '_source': obj
             } for obj in batch]
-            helpers.bulk(es, actions, index=new_index, doc_type='doc')
+            helpers.bulk(es, actions, index=new_index)
             print('.', end='', flush=True)
         except Exception as e:
             es.indices.delete(

@@ -25,7 +25,7 @@
 
 import json
 from pytest import raises, mark
-from mock import patch
+from unittest.mock import patch
 
 from invenio_deposit.signals import post_action
 from cap.modules.schemas.helpers import ValidationError

@@ -29,7 +29,7 @@ import json
 import tarfile
 import responses
 from pytest import mark
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from github import GithubException
 from invenio_files_rest.models import ObjectVersion
@@ -217,7 +217,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_release_webhoo
     class MockProject(object):
         id = 123
         def get_branch(self, name):
-            raise GithubException(404, data={'message': 'Branch not found'})
+            raise GithubException(404, headers={}, data={'message': 'Branch not found'})
 
         def get_commit(self, sha):
             mock = Mock()
@@ -250,7 +250,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_release_webhoo
     class MockProject(object):
         id = 123
         def get_branch(self, name):
-            raise GithubException(404, data={'message': 'Branch not found'})
+            raise GithubException(404, headers={}, data={'message': 'Branch not found'})
 
         def get_commit(self, sha):
             mock = Mock()
@@ -284,7 +284,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_r
     class MockProject(object):
         id = 123
         def get_branch(self, name):
-            raise GithubException(404, data={'message': 'Branch not found'})
+            raise GithubException(404, headers={}, data={'message': 'Branch not found'})
 
         def get_commit(self, sha):
             mock = Mock()
@@ -319,7 +319,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_r
     class MockProject(object):
         id = 123
         def get_branch(self, name):
-            raise GithubException(404, data={'message': 'Branch not found'})
+            raise GithubException(404, headers={}, data={'message': 'Branch not found'})
 
         def get_commit(self, sha):
             mock = Mock()
@@ -807,8 +807,7 @@ def test_upload_when_repo_file(m_get_repo, client, deposit,
         content_type='text/plain',
         headers={
             'Content-Length': '18',
-            'Content-Encoding': 'gzip',
-            'Content-Type': 'text/plain; charset=utf-8'
+            'Content-Encoding': 'gzip'
         },
         stream=True,
         status=200)
@@ -860,8 +859,7 @@ def test_upload_when_repo_file_with_type(m_get_repo, client, deposit,
         content_type='text/plain',
         headers={
             'Content-Length': '18',
-            'Content-Encoding': 'gzip',
-            'Content-Type': 'text/plain; charset=utf-8'
+            'Content-Encoding': 'gzip'
         },
         stream=True,
         status=200)

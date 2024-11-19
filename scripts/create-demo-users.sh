@@ -41,6 +41,7 @@ cap roles create analysis-preservation-support@cern.ch
 cap roles create faser-all@cern.ch
 
 cap roles add info@inveniosoftware.org analysis-preservation-support@cern.ch
+cap access allow superuser-access role analysis-preservation-support@cern.ch
 
 cap roles add cms@inveniosoftware.org cms-members@cern.ch
 cap roles add alice@inveniosoftware.org alice-member@cern.ch

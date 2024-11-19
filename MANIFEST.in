@@ -47,6 +47,7 @@ include .githooks/pre-push
 include .githooks/prepare-commit-msg
 include docker/harbour/backend/Dockerfile
 include docker/harbour/ui/Dockerfile
+include docker/base/Dockerfile
 include docker/haproxy/Dockerfile
 include docker/nginx/Dockerfile
 include docker/postgres/Dockerfile

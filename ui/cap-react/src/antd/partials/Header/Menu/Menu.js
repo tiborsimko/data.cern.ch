@@ -17,8 +17,8 @@ const SimpleMenu = ({
 
   let oauthLink =
     process.env.NODE_ENV === "development"
-      ? `/oauth/login/cern?next=/`
-      : `/api/oauth/login/cern?next=/`;
+      ? `/oauth/login/cern_openid?next=/`
+      : `/api/oauth/login/cern_openid?next=/`;
 
   const menuItems = [
     { key: "home", label: <a href="#home">Home</a> },
@@ -28,14 +28,7 @@ const SimpleMenu = ({
     { key: "documentation", label: <a href="#documentation">Documentation</a> },
     {
       key: "login",
-      label: (
-        <OauthPopup
-          url={oauthLink}
-          loginCallBack={() => initCurrentUser(location.state.next)}
-        >
-          <Button type="primary">Log In</Button>
-        </OauthPopup>
-      ),
+      label: <Button type="primary" href={oauthLink}>Login</Button>
     },
   ];
 

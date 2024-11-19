@@ -25,7 +25,7 @@
 
 import responses
 from gitlab.exceptions import GitlabAuthenticationError, GitlabGetError
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from pytest import raises
 
 from cap.modules.repos.errors import (GitIntegrationError, GitObjectNotFound,

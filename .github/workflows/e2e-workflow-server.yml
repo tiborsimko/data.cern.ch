@@ -2,7 +2,7 @@ name: E2E - Server changes with python package installations
 
 on:
   pull_request:
-    branches: [master, ant, faser]
+    branches: [master, next]
     paths:
       - "setup.py"
       - "requirements.txt"

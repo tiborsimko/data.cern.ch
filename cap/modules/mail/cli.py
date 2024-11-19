@@ -25,7 +25,7 @@
 
 import click
 from flask import current_app
-from flask_cli import with_appcontext
+from flask.cli import with_appcontext
 from flask_mail import Message
 
 from cap.cli import MutuallyExclusiveOption

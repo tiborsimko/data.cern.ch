@@ -48,7 +48,9 @@ def analysis_stage_sort(field_name, sub_field_name):
                 "type": "number",
                 "script": {
                     "lang": "painless",
-                    "source": f"params.get(doc['{field_name}'].value + ' - ' + doc['{sub_field_name}'].value)",  # noqa
+                    "source": "doc.containsKey('{0}') && doc.containsKey('{1}') && doc['{0}'].size() != 0 && doc['{1}'].size() != 0 ? params.get(doc['{0}'].value + ' - ' + doc['{1}'].value) : 0".format(  # noqa
+                        field_name, sub_field_name
+                    ),
                     "params": sort_params,
                 },
                 "order": "asc" if asc else "desc",

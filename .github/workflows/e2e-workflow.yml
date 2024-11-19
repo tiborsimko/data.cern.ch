@@ -5,11 +5,12 @@ on:
       - master
       - qa
       - production
+      - next
   pull_request:
     branches:
       - qa
       - production
-      - faser
+      - next
 jobs:
   Cypress:
     name: Cypress
@@ -25,7 +26,7 @@ jobs:
         run: docker-compose -f docker-compose.e2e.yml run web-api sh scripts/clean-and-init.sh
 
       - name: Update save folder
-        run: docker-compose -f docker-compose.e2e.yml run web-api  cap files location local var/data --default
+        run: docker-compose -f docker-compose.e2e.yml run web-api cap files location local var/data --default
 
       - name: Sleep for 180 seconds
         run: sleep 180s

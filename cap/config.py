@@ -21,6 +21,7 @@ from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
 from invenio_deposit.scopes import write_scope
 from invenio_deposit.utils import check_oauth2_scope
 from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
+from invenio_oauthclient.contrib.cern_openid import REMOTE_APP as CERN_OPENID_REMOTE_APP
 from invenio_records_rest.config import RECORDS_REST_ENDPOINTS
 from invenio_records_rest.facets import range_filter, terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
@@ -328,7 +329,7 @@ CAP_FACETS = {
         'facet_cms_working_group': {
             'terms': {
                 'size': 30,
-                'script': 'doc.containsKey("basic_info.cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null',  # noqa
+                'script': 'doc.containsKey("basic_info.cadi_id") && doc["basic_info.cadi_id"].size() != 0 ? doc["basic_info.cadi_id"].value?.substring(0,3) : null'  # noqa
             },
             'meta': {'title': 'CMS Working Group'},
         },
@@ -582,25 +583,26 @@ ACCOUNTS_REST_ACCOUNTS_LIST_SERIALIZERS = {
 #: Default API endpoint for search UI.
 SEARCH_UI_SEARCH_API = '/api/deposits'
 
-#: Default ElasticSearch hosts
-es_user = os.environ.get('ELASTICSEARCH_USER')
-es_password = os.environ.get('ELASTICSEARCH_PASSWORD')
-if es_user and es_password:
-    es_params = dict(
-        http_auth=(es_user, es_password),
-        use_ssl=str(os.environ.get('ELASTICSEARCH_USE_SSL')).lower() == 'true',
-        verify_certs=str(os.environ.get('ELASTICSEARCH_VERIFY_CERTS')).lower()
+#: Default Search hosts
+search_user = os.environ.get('OPENSEARCH_USER')
+search_password = os.environ.get('OPENSEARCH_PASSWORD')
+if search_user and search_password:
+    search_params = dict(
+        http_auth=(search_user, search_password),
+        use_ssl=str(os.environ.get('OPENSEARCH_USE_SSL')).lower() == 'true',
+        verify_certs=str(os.environ.get('OPENSEARCH_VERIFY_CERTS')).lower()
         == 'true',
-        url_prefix=os.environ.get('ELASTICSEARCH_URL_PREFIX', ''),
+        ssl_show_warn=False,
+        url_prefix=os.environ.get('OPENSEARCH_URL_PREFIX', ''),
     )
 else:
-    es_params = {}
+    search_params = {}
 
-SEARCH_ELASTIC_HOSTS = [
+SEARCH_HOSTS = [
     dict(
-        host=os.environ.get('ELASTICSEARCH_HOST', 'localhost'),
-        port=int(os.environ.get('ELASTICSEARCH_PORT', '9200')),
-        **es_params,
+        host=os.environ.get('OPENSEARCH_HOST', 'localhost'),
+        port=int(os.environ.get('OPENSEARCH_PORT', '9200')),
+        **search_params,
     )
 ]
 
@@ -620,6 +622,11 @@ CERN_APP_CREDENTIALS = {
     'consumer_secret': os.environ.get('INVENIO_CERN_APP_CREDENTIALS_SECRET'),
 }
 
+CERN_APP_OPENID_CREDENTIALS = {
+    'consumer_key': os.environ.get('INVENIO_CERN_APP_OPENID_CREDENTIALS_KEY'),
+    'consumer_secret': os.environ.get('INVENIO_CERN_APP_OPENID_CREDENTIALS_SECRET'),
+}
+
 # Update CERN OAuth handlers - due to REST - mostly only redirect urls
 # and error flashing
 CERN_REMOTE_APP.update(
@@ -629,16 +636,24 @@ CERN_REMOTE_APP.update(
     )
 )
 
+CERN_OPENID_REMOTE_APP["params"].update(dict(request_token_params={
+           "scope": "openid profile email cern-login-info offline_access",
+       }))
+
 CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 
 #: Defintion of OAuth client applications.
 OAUTHCLIENT_REMOTE_APPS = dict(
     cern=CERN_REMOTE_APP,
+    cern_openid=CERN_OPENID_REMOTE_APP
 )
 #: Serializer for extracting `extra_data` from invenio-oauthclient
 OAUTHCLIENT_CERN_EXTRA_DATA_SERIALIZER = oauth_extra_data_serializer
 OAUTHCLIENT_CERN_REFRESH_TIMEDELTA = timedelta(minutes=-10)
 
+# OAUTHCLIENT_CERN_OPENID_EXTRA_DATA_SERIALIZER = oauth_extra_data_serializer
+OAUTHCLIENT_CERN_OPENID_REFRESH_TIMEDELTA = timedelta(minutes=-10)
+OAUTHCLIENT_CERN_OPENID_ALLOWED_ROLES =  ["cern_user", "default-role"]
 #: Defintion of OAuth/Auth client template.
 AUTHENTICATION_POPUP_TEMPLATE = 'auth/authentication_popup.html'
 AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE = (
@@ -973,3 +988,6 @@ PROMETHEUS_ENABLE_EXPORTER_FLASK = False
 CERN_EGROUP_ACCOUNT_USERNAME = "CHANGE_ME"
 CERN_EGROUP_ACCOUNT_PASSWORD = "CHANGE_ME"
 CERN_EGROUP_ACCOUNT_DEFAULT_OWNER_ID = "CHANGE_ME_NUMBER"
+RECORDS_FILES_REST_ENDPOINTS = {}
+
+APP_HEALTH_BLUEPRINT_ENABLED=False

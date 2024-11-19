@@ -23,6 +23,10 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Basic Serializers."""
 
+from flask import jsonify, make_response
+
+from invenio_deposit.serializers import json_file_serializer, file_serializer
+
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.links import links_factory as deposit_links_factory
 from cap.modules.records.serializers.json import CAPJSONSerializer
@@ -49,3 +53,36 @@ class DepositSerializer(CAPJSONSerializer):
         if deposit.files:
             result['bucket'] = deposit.files.bucket
         return result
+
+
+def json_files_serializer(objs, status=None):
+    """JSON Files Serializer.
+
+    :parma objs: A list of:class:`invenio_files_rest.models.ObjectVersion`
+        instances.
+    :param status: A HTTP Status. (Default: ``None``)
+    :returns: A Flask response with JSON data.
+    :rtype: :py:class:`flask.Response`.
+    """
+    files = [file_serializer(obj) for obj in objs]
+    response = make_response(jsonify(files), status)
+    return response
+
+
+def json_file_response(obj=None, pid=None, record=None, status=None):
+    """JSON Files/File serializer.
+
+    :param obj: A :class:`invenio_files_rest.models.ObjectVersion` instance or
+        a :class:`invenio_records_files.api.FilesIterator` if it's a list of
+        files.
+    :param pid: PID value. (not used)
+    :param record: The record metadata. (not used)
+    :param status: The HTTP status code.
+    :returns: A Flask response with JSON data.
+    :rtype: :py:class:`flask.Response`.
+    """
+    from invenio_records_files.api import FilesIterator
+    if isinstance(obj, FilesIterator):
+        return json_files_serializer(obj, status=status)
+    else:
+        return json_file_serializer(obj, status=status)

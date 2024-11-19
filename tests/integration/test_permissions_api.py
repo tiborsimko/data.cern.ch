@@ -33,7 +33,7 @@ from werkzeug.local import LocalProxy
 
 from conftest import add_role_to_user
 from invenio_accounts.models import Role, User
-from mock import MagicMock, patch
+from unittest.mock import MagicMock, patch
 from pytest import mark
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)

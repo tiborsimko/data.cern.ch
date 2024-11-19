@@ -1,6 +1,6 @@
 """Configuration for record search."""
 
-from elasticsearch_dsl import Q
+from opensearch_dsl import Q
 from flask import g
 from flask_login import current_user
 from flask_principal import RoleNeed
@@ -58,7 +58,6 @@ class CAPRecordSearch(RecordsSearch):
         """Configuration for records search."""
 
         index = 'records'
-        doc_types = None
         fields = ('*',)
         facets = {}
         default_filter = DefaultFilter(records_filter)

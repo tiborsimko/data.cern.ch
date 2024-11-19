@@ -25,30 +25,28 @@
 
 import re
 
-from elasticsearch_dsl import Q, Search
+from opensearch_dsl import Q, Search
 from invenio_search.proxies import current_search_client as es
 
 CMS_TRIGGERS_ES_CONFIG = {
     'alias': 'cms-triggers',
     'mappings': {
-        "doc": {
-            "properties": {
-                "trigger": {
-                    "type": "keyword",
-                    "normalizer": "my_normalizer",
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
+        "properties": {
+            "trigger": {
+                "type": "keyword",
+                "normalizer": "my_normalizer",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
                     }
-                },
-                "year": {
-                    "type": "keyword",
-                },
-                "dataset": {
-                    "type": "keyword",
-                    "normalizer": "my_normalizer"
                 }
+            },
+            "year": {
+                "type": "keyword",
+            },
+            "dataset": {
+                "type": "keyword",
+                "normalizer": "my_normalizer"
             }
         }
     },

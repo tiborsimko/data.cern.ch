@@ -23,18 +23,16 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Search classes and methods for DAS querying."""
 
-from elasticsearch_dsl import Search
+from opensearch_dsl import Search
 from invenio_search.proxies import current_search_client as es
 
 DAS_DATASETS_ES_CONFIG = {
     'alias': 'das-datasets',
     "mappings": {
-        "doc": {
-            "properties": {
-                "name": {
-                    "type": "keyword",
-                    "normalizer": "lowercase_normalizer"
-                }
+        "properties": {
+            "name": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
             }
         }
     },

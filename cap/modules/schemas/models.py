@@ -507,7 +507,7 @@ def name_to_es_name(name):
 
 
 def create_index(index_name, mapping_body, aliases):
-    """Create index in elasticsearch, add under given aliases."""
+    """Create index in opensearch, add under given aliases."""
     if not es.indices.exists(index_name):
         current_search.mappings[index_name] = {}  # invenio search needs it
 

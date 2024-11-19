@@ -28,7 +28,7 @@ import tarfile
 
 import responses
 from invenio_files_rest.models import ObjectVersion
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from pytest import mark
 
 from cap.modules.repos.models import GitSnapshot

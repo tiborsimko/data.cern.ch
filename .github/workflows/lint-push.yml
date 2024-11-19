@@ -2,7 +2,7 @@ name: Lint Source
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, next ]
 
 jobs:
   lint-shellcheck:
@@ -23,7 +23,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.9
+          python-version: '3.10'
 
       - name: Check compliance with Python docstring conventions
         run: |
@@ -38,7 +38,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.9
+          python-version: '3.10'
 
       - name: Check compliance with pep8, pyflakes and circular complexity
         run: |
@@ -55,7 +55,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.9
+          python-version: '3.10'
 
       - name: Run black linter for python
         run: |
@@ -70,7 +70,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.9
+          python-version: '3.10'
 
       - name: isort your imports, so you don't have to.
         run: |
@@ -100,7 +100,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.9
+          python-version: '3.10'
 
       - name: Check Python manifest completeness
         run: |
@@ -120,7 +120,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.9
+          python-version: '3.10'
 
       - name: Checking commit quality (messages, signatures, spelling checks, etc)
         env:

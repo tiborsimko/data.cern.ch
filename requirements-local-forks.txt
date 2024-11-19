@@ -1,17 +1,13 @@
--e git+https://github.com/cernanalysispreservation/invenio-deposit.git#egg=invenio-deposit
-# -e git+https://github.com/reanahub/reana-client.git@master#egg=reana-client
-# -e git+https://github.com/reanahub/reana-commons.git@master#egg=reana-commons
-cryptography<=3.3.2
-reana-client==0.6.0
-reana-commons==0.6.0
--e git+https://github.com/cernanalysispreservation/invenio-oauthclient.git@master#egg=invenio-oauthclient
--e git+https://github.com/cernanalysispreservation/invenio-jsonschemas.git@master#egg=invenio-jsonschemas
--e git+https://github.com/cernanalysispreservation/invenio-search.git@master#egg=invenio-search
--e git+https://github.com/cernanalysispreservation/invenio-files-rest.git@fix-ensure-stream#egg=invenio-files-rest
--e git+https://github.com/cernanalysispreservation/invenio-userprofiles.git#egg=invenio-userprofiles
--e git+https://github.com/cernanalysispreservation/invenio-logging.git@v1.2.0-without-invenio-base-des#egg=invenio-logging[sentry,sentry-sdk]
--e git+https://github.com/cernanalysispreservation/flask-celeryext.git@master#egg=flask-celeryext
-# Install invenio-records from last commit before 1.1.0 version release
--e git+https://github.com/inveniosoftware/invenio-records.git@a5d4efb1e1466aa571aeef013d699dca1452f7cd#egg=invenio-records
--e git+https://github.com/celery/celery.git@6ccdc7b9f8e02d21275e923dccc7ccb9185e6153#egg=celery
-
+-e git+https://github.com/cernanalysispreservation/invenio-celery.git@mock/v1.1.1#egg=invenio-celery
+-e git+https://github.com/inveniosoftware/invenio-logging@94bc56117593eae62ba975d576e8c7b991311c0d#egg=invenio-logging[sentry,sentry-sdk]
+-e git+https://github.com/cernanalysispreservation/invenio-oauthclient.git@v1.1.3#egg=invenio-oauthclient
+-e git+https://github.com/cernanalysispreservation/invenio-userprofiles.git@v1.0.1#egg=invenio-userprofiles
+-e git+https://github.com/cernanalysispreservation/invenio-indexer.git@os-2-new#egg=invenio-indexer
+-e git+https://github.com/cernanalysispreservation/invenio-jsonschemas.git@v1.0.1#egg=invenio-jsonschemas
+-e git+https://github.com/cernanalysispreservation/invenio-oaiserver.git@os-2-new#egg=invenio-oaiserver
+-e git+https://github.com/cernanalysispreservation/invenio-records-rest.git@os-2-new#egg=invenio-records-rest
+-e git+https://github.com/cernanalysispreservation/invenio-search.git@v1.2.3#egg=invenio-search[opensearch2]
+-e git+https://github.com/cernanalysispreservation/invenio-files-rest.git@mock/v1.0.5#egg=invenio-files-rest
+-e git+https://github.com/cernanalysispreservation/invenio-records-files.git@new#egg=invenio-records-files
+-e git+https://github.com/cernanalysispreservation/invenio-deposit.git@os-2#egg=invenio-deposit
+-e git+https://github.com/cernanalysispreservation/invenio-query-parser.git@os#egg=invenio-query-parser
