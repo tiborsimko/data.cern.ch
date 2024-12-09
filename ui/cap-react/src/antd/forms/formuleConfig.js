@@ -5,6 +5,7 @@ import CernUsers from "./customFields/CernUsers";
 import CapFiles from "./customFields/CapFiles";
 import IdFetcher from "./customFields/IdFetcher";
 import ImportDataField from "./customFields/ImportDataField";
+import SchemaPathSuggester from "./customFields/SchemaPathSuggester";
 
 export const customFieldTypes = {
   advanced: {
@@ -93,7 +94,6 @@ export const customFieldTypes = {
           properties: {},
         },
         uiSchema: {
-          "ui:serfvicesList": ["orcid", "ror", "zenodo"],
           "ui:servicesList": ["capDeposits"],
           "ui:field": "idFetcher",
         },
@@ -202,4 +202,5 @@ export const customFields = {
   CapFiles: CapFiles,
   idFetcher: IdFetcher,
   importData: ImportDataField,
+  schemaPathSuggester: SchemaPathSuggester,
 };

@@ -2,6 +2,7 @@ import { Map, fromJS } from "immutable";
 
 import {
   UPDATE_SCHEMA_CONFIG,
+  UPDATE_SCHEMA_INITIAL_CONFIG,
   UPDATE_NOTIFICATION_BY_INDEX,
   UPDATE_NOTIFICATIONS,
   REMOVE_NOTIFICATION,
@@ -26,6 +27,8 @@ export default function schemaReducer(state = initialState, action) {
       return state.set("loading", action.value);
     case UPDATE_SCHEMA_CONFIG:
       return state.set("config", fromJS(action.config));
+    case UPDATE_SCHEMA_INITIAL_CONFIG:
+      return state.set("initialConfig", fromJS(action.config));
     case UPDATE_NOTIFICATION_BY_INDEX:
       return state.setIn(action.payload.path, action.payload.value);
     case UPDATE_NOTIFICATIONS:

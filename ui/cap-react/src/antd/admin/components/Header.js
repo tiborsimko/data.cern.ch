@@ -59,10 +59,12 @@ const Header = ({
 
     const a = document.createElement("a");
     const file = new Blob([fileData], { type: "text/json" });
+    const { name, version } = config.toJS();
+    const versionStr = version ? `v${version}` : "";
     a.href = URL.createObjectURL(file);
-    a.download = `${config.toJS().name || "cap-schema"}-export-v${
-      config.toJS().version
-    }-${Date.now()}.json`;
+    a.download = `${
+      name || "cap-schema"
+    }-export${versionStr}-${Date.now()}.json`;
     a.click();
   };
   const _renderSchemaPreview = schemaPreviewDisplay => {

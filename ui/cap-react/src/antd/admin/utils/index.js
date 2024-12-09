@@ -1,7 +1,10 @@
 import { initFormuleSchema } from "react-formule";
 import { merge } from "lodash-es";
 import store from "../../../store/configureStore";
-import { updateSchemaConfig } from "../../../actions/builder";
+import {
+  updateSchemaConfig,
+  updateSchemaInitialConfig,
+} from "../../../actions/builder";
 
 export const SIZE_OPTIONS = {
   xsmall: 8,
@@ -20,25 +23,18 @@ const NOTIFICATIONS = {
   },
 };
 
-export const slugify = text => {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/[^\w-]+/g, "") // Remove all non-word chars
-    .replace(/--+/g, "-") // Replace multiple - with single -
-    .replace(/^-+/, "") // Trim - from start of text
-    .replace(/-+$/, ""); // Trim - from end of text
-};
-
 export const initFormuleSchemaWithNotifications = (
   data = {},
-  name,
+  title,
   description
 ) => {
   data.config = merge(data.config || {}, NOTIFICATIONS);
-  initFormuleSchema(data, name, description);
-  /* eslint no-unused-vars: ["error", { "ignoreRestSiblings": true }]*/
   const { deposit_schema, deposit_options, ...configs } = data;
+  initFormuleSchema(
+    { schema: deposit_schema, uiSchema: deposit_options, id: configs.name },
+    title,
+    description
+  );
   store.dispatch(updateSchemaConfig(configs));
+  store.dispatch(updateSchemaInitialConfig(configs));
 };

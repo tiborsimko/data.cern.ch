@@ -46,7 +46,7 @@ const AdminPanel = ({ location, match, getSchema, loading, formuleState }) => {
       case "notifications":
         return <Notifications />;
       case "permissions":
-        return <Permissions />;
+        return <Permissions isNew={match.params.schema_name === "new"} />;
       default:
         return (
           <SchemaWizard

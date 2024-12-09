@@ -29,6 +29,23 @@ import {
 import { configSchema } from "../utils/schemaSettings";
 import { FormuleForm } from "react-formule";
 
+// Left as documentation
+/*
+  const initialStatePermissions = Map({
+    deposit: {
+      read: { users: [], roles: [] },
+      update: { users: [], roles: [] },
+      admin: { users: [], roles: [] },
+      review: { users: [], roles: [] },
+      create: { users: [], roles: [] },
+    },
+    records: {
+      read: { users: [], roles: [] },
+      review: { users: [], roles: [] },
+    },
+  });
+*/
+
 const Permissions = ({
   schemaName,
   schemaVersion,
@@ -38,11 +55,12 @@ const Permissions = ({
   deleteSchemaPermissions,
   config,
   updateSchemaConfig,
+  isNew,
 }) => {
   const [editable, setEditable] = useState(false);
   const [addEnabled, setAddEnabled] = useState(false);
   useEffect(() => {
-    getSchemaPermissions(schemaName, schemaVersion);
+    !isNew && getSchemaPermissions(schemaName, schemaVersion);
   }, []);
 
   const addSchemaPermissionsToEmail = (
@@ -148,7 +166,7 @@ const Permissions = ({
                         <Typography.Paragraph style={{ marginBottom: 0 }}>
                           Here you can manage access to your{" "}
                           <Typography.Text strong>
-                            {schemaName} ({schemaVersion})
+                            {schemaName} {schemaVersion && `(${schemaVersion})`}
                           </Typography.Text>{" "}
                           collection. You can determine who can perform specific
                           action for both states of your document
@@ -205,8 +223,8 @@ Permissions.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    schemaName: state.builder.get("formuleState").config.name,
-    schemaVersion: state.builder.get("formuleState").config.version,
+    schemaName: state.builder.getIn(["config", "name"]),
+    schemaVersion: state.builder.getIn(["config", "version"]),
     permissions: state.builder.get("permissions"),
     config: state.builder.get("config"),
   };

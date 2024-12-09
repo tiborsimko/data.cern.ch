@@ -2,21 +2,22 @@ import PropTypes from "prop-types";
 import { Card, Divider, Modal, Space, Tag, Typography } from "antd";
 import { EyeFilled, LinkOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { CodeEditor } from "react-formule";
+import { CodeViewer } from "react-formule";
 
 const CAPDeposit = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
 
-  console.log(JSON.stringify(data, null, 2));
-
   return (
     <>
-      <Modal open={showModal} onCancel={() => setShowModal(false)}>
-        <CodeEditor
+      <Modal
+        open={showModal}
+        onCancel={() => setShowModal(false)}
+        footer={null}
+        width={1000}
+      >
+        <CodeViewer
           lang="json"
-          initialValue={JSON.stringify(data, null, 2)}
-          lint="json"
-          isEditable={false} // TODO: Change to !isEditable?
+          value={JSON.stringify(data, null, 2)}
           height="calc(100vh - 325px)"
         />
       </Modal>

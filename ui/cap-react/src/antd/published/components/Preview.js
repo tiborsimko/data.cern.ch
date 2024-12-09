@@ -149,8 +149,6 @@ const Preview = ({
                 schema={transformSchema(schemas.schema)}
                 schemaType={schemaType}
                 uiSchema={schemas.uiSchema}
-                isPublished
-                className={["__PublishedForm__"]}
               >
                 <span />
               </JSONSchemaPreviewer>

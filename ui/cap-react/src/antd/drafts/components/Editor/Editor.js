@@ -64,8 +64,8 @@ const Editor = ({
             schema={_schema}
             uiSchema={schemas.uiSchema || {}}
             extraErrors={extraErrors || {}}
-            draftEditor
-            readonly={mode != "edit" || !canEdit(canAdmin, canUpdate)}
+            readonly={!canEdit(canAdmin, canUpdate)}
+            isPublished={mode != "edit"}
             transformErrors={transformErrors}
           />
         </Layout.Content>

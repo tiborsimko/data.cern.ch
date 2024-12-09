@@ -12,6 +12,7 @@ export const SYNCHRONIZE_FORMULE_STATE = "SYNCHRONIZE_FORMULE_STATE";
 
 export const SET_SCHEMA_LOADING = "SET_SCHEMA_LOADING";
 export const UPDATE_SCHEMA_CONFIG = "UPDATE_SCHEMA_CONFIG";
+export const UPDATE_SCHEMA_INITIAL_CONFIG = "UPDATE_SCHEMA_INITIAL_CONFIG";
 
 export const UPDATE_NOTIFICATION_BY_INDEX = "UPDATE_NOTIFICATION_BY_INDEX";
 export const UPDATE_NOTIFICATIONS = "UPDATE_NOTIFICATIONS";
@@ -32,6 +33,11 @@ export const setSchemaLoading = value => ({
 
 export const updateSchemaConfig = config => ({
   type: UPDATE_SCHEMA_CONFIG,
+  config,
+});
+
+export const updateSchemaInitialConfig = config => ({
+  type: UPDATE_SCHEMA_INITIAL_CONFIG,
   config,
 });
 
@@ -158,7 +164,7 @@ export const saveSchemaChanges = () => (dispatch, getState) => {
   );
   // check whether there are changes to the config object
   const isConfigVersionUpdated =
-    config.get("version") != state.builder.get("initialConfig").version;
+    config.get("version") != state.builder.getIn(["initialConfig", "version"]);
 
   if (isSchemaUpdated && !isConfigVersionUpdated) {
     notification.warning({

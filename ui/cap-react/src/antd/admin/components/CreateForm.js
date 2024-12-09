@@ -6,8 +6,7 @@ import { initFormuleSchemaWithNotifications } from "../utils";
 const CreateForm = ({ history }) => {
   const onFinish = content => {
     let { name, description } = content;
-    const config = { config: { fullname: name } };
-    initFormuleSchemaWithNotifications({ config }, name, description);
+    initFormuleSchemaWithNotifications({ fullname: name }, name, description);
     history.push(CMS_NEW);
   };
 
