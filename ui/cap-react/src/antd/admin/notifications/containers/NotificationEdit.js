@@ -3,11 +3,11 @@ import {
   createNewNotification,
   removeNotification,
   updateNotificationData,
-} from "../../../../actions/schemaWizard";
+} from "../../../../actions/builder";
 import NotificationEdit from "../components/NotificationEdit";
 
-const mapStateToProps = (state) => ({
-  schemaConfig: state.schemaWizard.getIn([
+const mapStateToProps = state => ({
+  schemaConfig: state.builder.getIn([
     "config",
     "config",
     "notifications",
@@ -17,7 +17,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  createNewNotification: (category) => createNewNotification(category),
+  createNewNotification: category => createNewNotification(category),
   removeNotification: (index, category) => removeNotification(index, category),
   updateNotificationData: (data, index, category) =>
     updateNotificationData(data, index, category),

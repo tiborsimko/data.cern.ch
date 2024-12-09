@@ -1,8 +1,7 @@
+import { FormuleForm } from "react-formule";
 import PropTypes from "prop-types";
-import Form from "../../forms/Form";
 
 const JSONSchemaPreviewer = ({
-  isPublished,
   schema,
   uiSchema,
   children,
@@ -10,12 +9,10 @@ const JSONSchemaPreviewer = ({
   onChange,
   onSubmit,
   formData,
-  className,
 }) => {
   return (
     schema && (
-      <Form
-        className={className}
+      <FormuleForm
         schema={schema}
         showErrorList={false}
         uiSchema={{
@@ -30,14 +27,10 @@ const JSONSchemaPreviewer = ({
         onBlur={() => {}}
         onChange={onChange}
         onSubmit={onSubmit}
-        formContext={{
-          tabView: display === "tabView",
-          readonlyPreview: true,
-          isPublished: isPublished,
-        }}
+        isPublished
       >
         {children}
-      </Form>
+      </FormuleForm>
     )
   );
 };

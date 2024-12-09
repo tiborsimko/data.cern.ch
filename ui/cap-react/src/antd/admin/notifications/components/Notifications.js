@@ -75,7 +75,6 @@ const Notifications = ({ schemaConfig, createNotificationCategory }) => {
           <Col flex="none">
             <Button
               type="primary"
-              shape="circle"
               icon={<PlusOutlined />}
               onClick={() => setModalVisible(true)}
             />

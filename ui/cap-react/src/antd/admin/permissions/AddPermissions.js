@@ -1,20 +1,11 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Form,
-  Input,
-  Space,
-  Radio,
-  Typography,
-} from "antd";
+import { Form, Input, Space, Radio, Typography } from "antd";
 import axios from "../../../axios";
 import { debounce } from "lodash-es";
 import CollectionPermissions from "../../collection/CollectionPermissions";
 
-const Permissions = ({
-  handlePermissions,
-  permissions,
-}) => {
+const Permissions = ({ handlePermissions, permissions }) => {
   const [ldapData, setLdapData] = useState([]);
   const [tableLoading, setTableLoading] = useState(false);
   const [searchFor, setSearchFor] = useState("user");
@@ -40,14 +31,6 @@ const Permissions = ({
     );
     setTableLoading(false);
   }, 500);
-
-  // const [displayModal, setDisplayModal] = useState(false);
-
-  // const closeModal = () => {
-  //   setDisplayModal(false);
-  //   form.resetFields();
-  //   setLdapData([]);
-  // };
 
   return (
     <>

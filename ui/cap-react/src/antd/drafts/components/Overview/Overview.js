@@ -48,7 +48,7 @@ const Overview = ({
 
   const infoArray = [
     {
-      text: `${revision} revision`,
+      text: `${revision} revision(s)`,
       icon: <InfoCircleOutlined />,
     },
     {
@@ -155,7 +155,6 @@ const Overview = ({
                 schemaType={mySchema}
                 uiSchema={schemas.uiSchema || {}}
                 display="list"
-                onChange={() => {}}
               >
                 <span />
               </JSONSchemaPreviewer>

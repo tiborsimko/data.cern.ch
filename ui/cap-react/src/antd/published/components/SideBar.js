@@ -13,7 +13,7 @@ const SideBar = ({ files, status, onClose, visibleFileDrawer }) => {
       open={visibleFileDrawer}
       key="fileSettings"
       size="large"
-      bodyStyle={{ padding: "5px" }}
+      style={{ body: { padding: "5px" }}}
       contentWrapperStyle={{ width: !screens.lg ? "80%" : "40%" }}
     >
       <FileList files={files} status={status} />

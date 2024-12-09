@@ -1,9 +1,5 @@
 import { connect } from "react-redux";
 import SelectContentType from "../components/SelectContentType";
-import {
-  selectContentTypeEdit,
-  selectContentTypeView,
-} from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
   return {
@@ -11,11 +7,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    selectEdit: id => dispatch(selectContentTypeEdit(id)),
-    selectView: id => dispatch(selectContentTypeView(id)),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SelectContentType);
+export default connect(mapStateToProps)(SelectContentType);

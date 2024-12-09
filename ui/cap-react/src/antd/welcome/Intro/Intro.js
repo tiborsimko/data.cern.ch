@@ -1,4 +1,4 @@
-import { ReactComponent as HomeImage } from "../img/home-image.svg";
+import HomeImage from "../img/home-image.svg?react";
 import { Row, Col, Typography, Space, Grid } from "antd";
 import {
   DatabaseOutlined,

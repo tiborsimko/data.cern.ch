@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Header from "../containers/Header";
-import { CMS_NEW } from "../../routes";
 import DocumentTitle from "../../partials/DocumentTitle";
-import SchemaWizard from "../containers/SchemaWizard";
+import SchemaWizard from "../components/SchemaWizard";
 import Notifications from "../notifications/containers/Notifications";
 import { FloatButton, Layout } from "antd";
 import Joyride, { STATUS } from "react-joyride";
@@ -12,20 +11,22 @@ import TourTooltip from "../utils/tour/TourTooltip";
 import { CarOutlined } from "@ant-design/icons";
 import useStickyState from "../../hooks/useStickyState";
 import { PRIMARY_COLOR } from "../../utils/theme";
+import { isEmpty } from "lodash-es";
+import { initFormuleSchemaWithNotifications } from "../utils";
 import Permissions from "../permissions/Permissions";
 
-const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
+const AdminPanel = ({ location, match, getSchema, loading, formuleState }) => {
   useEffect(() => {
     let { schema_name, schema_version } = match.params;
-    const { pathname } = location;
 
-    // fetch schema
-    // in order to cover all the potential situations creating from the already exist schemas
-    // and create a new one from scratch
-    if (schema_name) {
-      pathname.startsWith(CMS_NEW)
-        ? schema.size == 0 && schemaInit()
-        : getSchema(schema_name, schema_version);
+    if (schema_name == "new") {
+      // If the schema hasn't been initialized yet (i.e. the user has navigated directly to /new), initialize it
+      if (isEmpty(formuleState?.current?.schema)) {
+        initFormuleSchemaWithNotifications();
+      }
+      // Otherwise do nothing as it means it's been already initialized in CreateForm or DropDownBox
+    } else {
+      getSchema(schema_name, schema_version);
     }
   }, []);
 
@@ -35,17 +36,23 @@ const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
 
   const getPageTitle = () =>
     location.pathname.includes("notifications")
-      ? "Notifications" : location.pathname.includes("permissions") ?
-      "Permissions" : "Form Builder";
+      ? "Notifications"
+      : location.pathname.includes("permissions")
+      ? "Permissions"
+      : "Form Builder";
 
   const getDisplay = () => {
     switch (display) {
       case "notifications":
         return <Notifications />;
       case "permissions":
-        return <Permissions />;
+        return <Permissions isNew={match.params.schema_name === "new"} />;
       default:
-        return <SchemaWizard />;
+        return (
+          <SchemaWizard
+            loading={isEmpty(formuleState?.current?.schema) || loading}
+          />
+        );
     }
   };
 
@@ -93,10 +100,8 @@ const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
 AdminPanel.propTypes = {
   match: PropTypes.object,
   location: PropTypes.object,
-  replacePath: PropTypes.func,
-  schema: PropTypes.object,
-  schemaInit: PropTypes.func,
   getSchema: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 export default AdminPanel;

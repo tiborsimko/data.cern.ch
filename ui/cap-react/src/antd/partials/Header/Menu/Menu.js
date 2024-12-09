@@ -1,13 +1,12 @@
 import PropTypes from "prop-types";
 import { Menu, Dropdown, Button } from "antd";
 import { WELCOME } from "../../../routes";
-import OauthPopup from "../../OAuthPopUp";
 import { LoginOutlined } from "@ant-design/icons";
 import LoginForm from "../LoginForm";
 import { useState } from "react";
+import { getConfigFor } from "../../../../config";
 
 const SimpleMenu = ({
-  initCurrentUser,
   loginLocalUser,
   location = { state: { next: "/" } },
 }) => {
@@ -17,8 +16,8 @@ const SimpleMenu = ({
 
   let oauthLink =
     process.env.NODE_ENV === "development"
-      ? `/oauth/login/cern?next=/`
-      : `/api/oauth/login/cern?next=/`;
+      ? `/oauth/login/cern_openid?next=/`
+      : `/api/oauth/login/cern_openid?next=/`;
 
   const menuItems = [
     { key: "home", label: <a href="#home">Home</a> },
@@ -28,18 +27,11 @@ const SimpleMenu = ({
     { key: "documentation", label: <a href="#documentation">Documentation</a> },
     {
       key: "login",
-      label: (
-        <OauthPopup
-          url={oauthLink}
-          loginCallBack={() => initCurrentUser(location.state.next)}
-        >
-          <Button type="primary">Log In</Button>
-        </OauthPopup>
-      ),
+      label: <Button type="primary" href={oauthLink}>Login</Button>
     },
   ];
 
-  (process.env.NODE_ENV == "development" || process.env.ENABLE_E2E) &&
+  (process.env.NODE_ENV == "development" || getConfigFor("ENABLE_E2E")) &&
     menuItems.unshift({
       key: "localLogin",
       label: (
@@ -70,7 +62,6 @@ const SimpleMenu = ({
 
 SimpleMenu.propTypes = {
   location: PropTypes.object,
-  initCurrentUser: PropTypes.func,
   loginLocalUser: PropTypes.func,
 };
 

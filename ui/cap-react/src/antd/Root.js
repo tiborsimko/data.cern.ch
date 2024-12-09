@@ -5,12 +5,16 @@ import App from "../antd/App";
 import { ConfigProvider } from "antd";
 import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
 import { theme } from "./utils/theme";
+import { getConfigFor } from "../config";
+
+const PIWIK_URL = getConfigFor("PIWIK_URL");
+const PIWIK_SITE_ID = getConfigFor("PIWIK_SITE_ID");
 
 export const matomoInstance =
-  process.env.PIWIK_URL && process.env.PIWIK_SITEID
+  PIWIK_URL && PIWIK_SITE_ID
     ? createInstance({
-        urlBase: process.env.PIWIK_URL,
-        siteId: process.env.PIWIK_SITEID,
+        urlBase: PIWIK_URL,
+        siteId: PIWIK_SITE_ID,
       })
     : null;
 

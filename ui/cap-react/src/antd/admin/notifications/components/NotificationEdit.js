@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { Button, Col, Popconfirm, Row } from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
-import Form from "../../../forms/Form";
 import { schema, uiSchema } from "../utils";
 import { DeleteOutlined } from "@ant-design/icons";
+import { FormuleForm } from "react-formule";
 const NotificationEdit = ({
   schemaConfig,
   removeNotification,
@@ -42,7 +42,7 @@ const NotificationEdit = ({
       />
       <Row justify="center">
         <Col span={12}>
-          <Form
+          <FormuleForm
             schema={schema}
             uiSchema={uiSchema}
             onChange={({ formData }) =>

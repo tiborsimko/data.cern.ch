@@ -17,7 +17,7 @@ import {
   postSchemaPermissions,
   deleteSchemaPermissions,
   updateSchemaConfig,
-} from "../../../actions/schemaWizard";
+} from "../../../actions/builder";
 import AddPermissions from "./AddPermissions";
 import { Map } from "immutable";
 import {
@@ -27,21 +27,24 @@ import {
 } from "@ant-design/icons";
 
 import { configSchema } from "../utils/schemaSettings";
-import Form from "../../forms/Form";
+import { FormuleForm } from "react-formule";
 
-// const initialStatePermissions = Map({
-//   deposit: {
-//     read: { users: [], roles: [] },
-//     update: { users: [], roles: [] },
-//     admin: { users: [], roles: [] },
-//     review: { users: [], roles: [] },
-//     create: { users: [], roles: [] },
-//   },
-//   records: {
-//     read: { users: [], roles: [] },
-//     review: { users: [], roles: [] },
-//   },
-// });
+// Left as documentation
+/*
+  const initialStatePermissions = Map({
+    deposit: {
+      read: { users: [], roles: [] },
+      update: { users: [], roles: [] },
+      admin: { users: [], roles: [] },
+      review: { users: [], roles: [] },
+      create: { users: [], roles: [] },
+    },
+    records: {
+      read: { users: [], roles: [] },
+      review: { users: [], roles: [] },
+    },
+  });
+*/
 
 const Permissions = ({
   schemaName,
@@ -52,11 +55,12 @@ const Permissions = ({
   deleteSchemaPermissions,
   config,
   updateSchemaConfig,
+  isNew,
 }) => {
   const [editable, setEditable] = useState(false);
   const [addEnabled, setAddEnabled] = useState(false);
   useEffect(() => {
-    getSchemaPermissions(schemaName, schemaVersion);
+    !isNew && getSchemaPermissions(schemaName, schemaVersion);
   }, []);
 
   const addSchemaPermissionsToEmail = (
@@ -93,118 +97,121 @@ const Permissions = ({
     <Layout
       style={{ height: "100%", padding: "20px", flex: 1, display: "flex" }}
     >
-        <Col span={18}>
+      <Col span={18}>
         <Tabs
           tabPosition="left"
-          items={[{
-            label: "Collection settings",
-            key: "collection",
-            children: (
-            <Card size="small" title="Collection info & settings">
-            <Form
-              {...configSchema}
-              formData={config.toJS()}
-              onChange={data => updateSchemaConfig(data.formData)}
-            />
-            {/* </Space> */}
-          </Card>)
-          },{
-            label: "Permissions",
-            key: "permissions",
-            children: (
-                   <Card
-            size="small"
-            title="Permissions"
-            extra={
-              <Space>
-                {!addEnabled && (
-                  <Button
-                    icon={editable ? <CloseSquareFilled /> : <EditFilled />}
-                    size="small"
-                    onClick={() => setEditable(!editable)}
-                  >
-                    {editable ? "Close" : "Edit"}
-                  </Button>
-                )}
-                {!editable && (
-                  <Button
-                    icon={
-                      addEnabled ? (
-                        <CloseSquareFilled />
-                      ) : (
-                        <PlusCircleOutlined />
-                      )
-                    }
-                    size="small"
-                    onClick={() => setAddEnabled(!addEnabled)}
-                  >
-                    {addEnabled ? "Close" : "Add"}
-                  </Button>
-                )}
-              </Space>
-            }
-          >
-            {addEnabled && (
-              <Alert
-                banner
-                message={
-                  "Search for CERN users and egroups and give them access to the collection."
-                }
-                type="info"
-              />
-            )}
-            {!addEnabled ? (
-              <>
-                <Space direction="vertical" style={{ marginBottom: 20 }}>
-                  <Typography.Paragraph style={{ marginBottom: 0 }}>
-                    Here you can manage access to your{" "}
-                    <Typography.Text strong>
-                      {schemaName} ({schemaVersion})
-                    </Typography.Text>{" "}
-                    collection. You can determine who can perform specific
-                    action for both states of your document (draft/published)
-                  </Typography.Paragraph>
-
-                  <Space direction="vertical">
-                    <Typography.Text>
-                      <Typography.Text strong>Actions: </Typography.Text>
-                      <Typography.Text keyboard>read</Typography.Text>,
-                      <Typography.Text keyboard>create</Typography.Text>,
-                      <Typography.Text keyboard>update</Typography.Text>,
-                      <Typography.Text keyboard>admin</Typography.Text>,
-                      <Typography.Text keyboard>review</Typography.Text>
-                    </Typography.Text>
-                  </Space>
-                </Space>
-                {editable && (
-                  <Alert
-                    banner
-                    message={
-                      "By (un)selecting permissions below you can give and remove access to users/egroups"
-                    }
-                    type="info"
+          items={[
+            {
+              label: "Collection settings",
+              key: "collection",
+              children: (
+                <Card title="Collection info & settings">
+                  <FormuleForm
+                    {...configSchema}
+                    formData={config.toJS()}
+                    onChange={data => updateSchemaConfig(data.formData)}
                   />
-                )}
-                <CollectionPermissions
-                  permissions={permissions ? Map(permissions) : Map({})}
-                  handlePermissions={addSchemaPermissionsToEmail}
-                  editable={editable}
-                />
-              </>
-            ) : (
-              <AddPermissions
-                permissions={permissions}
-                editable={editable}
-                handlePermissions={addSchemaPermissionsToEmail}
-              />
-            )}
-          </Card>
-            )
-          }
+                </Card>
+              ),
+            },
+            {
+              label: "Permissions",
+              key: "permissions",
+              children: (
+                <Card
+                  title="Permissions"
+                  extra={
+                    <Space>
+                      {!addEnabled && (
+                        <Button
+                          icon={
+                            editable ? <CloseSquareFilled /> : <EditFilled />
+                          }
+                          size="small"
+                          onClick={() => setEditable(!editable)}
+                        >
+                          {editable ? "Close" : "Edit"}
+                        </Button>
+                      )}
+                      {!editable && (
+                        <Button
+                          icon={
+                            addEnabled ? (
+                              <CloseSquareFilled />
+                            ) : (
+                              <PlusCircleOutlined />
+                            )
+                          }
+                          size="small"
+                          onClick={() => setAddEnabled(!addEnabled)}
+                        >
+                          {addEnabled ? "Close" : "Add"}
+                        </Button>
+                      )}
+                    </Space>
+                  }
+                >
+                  {addEnabled && (
+                    <Alert
+                      banner
+                      message={
+                        "Search for CERN users and egroups and give them access to the collection."
+                      }
+                      type="info"
+                    />
+                  )}
+                  {!addEnabled ? (
+                    <>
+                      <Space direction="vertical" style={{ marginBottom: 20 }}>
+                        <Typography.Paragraph style={{ marginBottom: 0 }}>
+                          Here you can manage access to your{" "}
+                          <Typography.Text strong>
+                            {schemaName} {schemaVersion && `(${schemaVersion})`}
+                          </Typography.Text>{" "}
+                          collection. You can determine who can perform specific
+                          action for both states of your document
+                          (draft/published)
+                        </Typography.Paragraph>
+
+                        <Space direction="vertical">
+                          <Typography.Text>
+                            <Typography.Text strong>Actions: </Typography.Text>
+                            <Typography.Text keyboard>read</Typography.Text>,
+                            <Typography.Text keyboard>create</Typography.Text>,
+                            <Typography.Text keyboard>update</Typography.Text>,
+                            <Typography.Text keyboard>admin</Typography.Text>,
+                            <Typography.Text keyboard>review</Typography.Text>
+                          </Typography.Text>
+                        </Space>
+                      </Space>
+                      {editable && (
+                        <Alert
+                          banner
+                          message={
+                            "By (un)selecting permissions below you can give and remove access to users/egroups"
+                          }
+                          type="info"
+                        />
+                      )}
+                      <CollectionPermissions
+                        permissions={permissions ? Map(permissions) : Map({})}
+                        handlePermissions={addSchemaPermissionsToEmail}
+                        editable={editable}
+                      />
+                    </>
+                  ) : (
+                    <AddPermissions
+                      permissions={permissions}
+                      editable={editable}
+                      handlePermissions={addSchemaPermissionsToEmail}
+                    />
+                  )}
+                </Card>
+              ),
+            },
           ]}
         />
-
-        </Col>
+      </Col>
     </Layout>
   );
 };
@@ -214,12 +221,14 @@ Permissions.propTypes = {
   createNotificationCategory: PropTypes.func,
 };
 
-const mapStateToProps = state => ({
-  schemaName: state.schemaWizard.getIn(["config", "name"]),
-  schemaVersion: state.schemaWizard.getIn(["config", "version"]),
-  permissions: state.schemaWizard.getIn(["permissions"]),
-  config: state.schemaWizard.get("config"),
-});
+const mapStateToProps = state => {
+  return {
+    schemaName: state.builder.getIn(["config", "name"]),
+    schemaVersion: state.builder.getIn(["config", "version"]),
+    permissions: state.builder.get("permissions"),
+    config: state.builder.get("config"),
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   getSchemaPermissions: (schema, version) =>

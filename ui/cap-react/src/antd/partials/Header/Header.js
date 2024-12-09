@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { ReactComponent as CAPLogoLight } from "../../../img/cap-logo-light.svg";
+import CAPLogoLight from "../../../img/cap-logo-light.svg?react";
 import { Row, Col, Grid } from "antd";
 
 import { Link } from "react-router-dom";

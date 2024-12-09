@@ -21,9 +21,8 @@ import {
   UndoOutlined,
 } from "@ant-design/icons";
 import ErrorScreen from "../../partials/Error";
-import CodeEditor from "../../utils/CodeEditor";
-import { json, jsonParseLinter } from "@codemirror/lang-json";
-import CodeDiffViewer from "../../utils/CodeDiffViewer";
+import { CodeEditor } from "react-formule";
+import { CodeDiffViewer } from "react-formule";
 import { CMS } from "../../routes";
 
 const { useBreakpoint } = Grid;
@@ -165,10 +164,12 @@ const Schemas = ({ match, pushPath }) => {
               title={`${selection} diff`}
               width={1000}
               footer={null}
-              bodyStyle={{
-                overflowX: "scroll",
-                overflowY: "auto",
-                maxHeight: "calc(100vh - 200px)",
+              style={{
+                body: {
+                  overflowX: "scroll",
+                  overflowY: "auto",
+                  maxHeight: "calc(100vh - 200px)",
+                },
               }}
             >
               <CodeDiffViewer
@@ -183,7 +184,7 @@ const Schemas = ({ match, pushPath }) => {
               />
             </Modal>
             <Row>
-              <Col xs={4}>
+              <Col xs={8}>
                 <Menu
                   mode="horizontal"
                   className="no-bottom-border"
@@ -203,7 +204,7 @@ const Schemas = ({ match, pushPath }) => {
                   ]}
                 />
               </Col>
-              <Col xs={20}>
+              <Col xs={16}>
                 <Menu
                   mode="horizontal"
                   selectable={false}
@@ -338,15 +339,16 @@ const Schemas = ({ match, pushPath }) => {
                 <Row justify="center" style={{ backgroundColor: "white" }}>
                   <Col xs={24}>
                     <CodeEditor
-                      value={JSON.stringify(
+                      initialValue={JSON.stringify(
                         selection === FULL_SCHEMA ? schema : schema[selection],
                         null,
                         2
                       )}
-                      lang={json}
-                      isReadOnly={!EDITABLE_FIELDS.includes(selection)}
+                      lang="json"
+                      isEditable={EDITABLE_FIELDS.includes(selection)}
                       handleEdit={handleEdit}
-                      lint={jsonParseLinter}
+                      lint="json"
+                      reset
                       schema={schema} // to render a new editor instance on schema change
                       height="calc(100vh - 325px)"
                     />

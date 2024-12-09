@@ -18,7 +18,7 @@ const DraftItemNav = ({
       placement="left"
       onClose={onClose}
       open={visibleMenuDrawer}
-      bodyStyle={{ padding: 0 }}
+      style={{ body: { padding: 0 }}}
       key="menu"
     >
       <NavMenu match={match} history={history} formErrors={formErrors} />

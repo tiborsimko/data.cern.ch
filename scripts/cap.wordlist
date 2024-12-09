@@ -60,3 +60,7 @@ repos
 isort
 validator
 utils
+codemirror
+formule
+react-formule
+npm

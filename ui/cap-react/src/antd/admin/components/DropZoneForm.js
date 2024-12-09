@@ -1,6 +1,9 @@
-import PropTypes from "prop-types";
 import { notification, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
+import { initFormuleSchemaWithNotifications } from "../utils";
+import { CMS_NEW } from "../../routes";
+import { withRouter } from "react-router";
+
 const isfileJson = filename => {
   const extension = filename.substr(filename.lastIndexOf(".") + 1);
   if (!/(json)$/gi.test(extension)) {
@@ -9,7 +12,8 @@ const isfileJson = filename => {
     return extension;
   }
 };
-const DropZoneForm = ({ initWizard }) => {
+
+const DropZoneForm = ({ history }) => {
   return (
     <Upload.Dragger
       name="adminJsonFiles"
@@ -23,7 +27,8 @@ const DropZoneForm = ({ initWizard }) => {
             reader.onload = function (event) {
               const newSchema = JSON.parse(event.target.result);
               if (newSchema["deposit_schema"] && newSchema["deposit_options"]) {
-                initWizard(newSchema);
+                initFormuleSchemaWithNotifications(newSchema);
+                history.push(CMS_NEW);
               } else {
                 notification.error({
                   message: "Missing Keys",
@@ -54,8 +59,4 @@ const DropZoneForm = ({ initWizard }) => {
   );
 };
 
-DropZoneForm.propTypes = {
-  initWizard: PropTypes.func,
-};
-
-export default DropZoneForm;
+export default withRouter(DropZoneForm);

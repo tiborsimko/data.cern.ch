@@ -2,7 +2,7 @@ name: Lint Source
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   lint-shellcheck:
@@ -85,7 +85,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2-beta
         with:
-          node-version: "10"
+          node-version: "20"
 
       - name: Run prettier
         run: |

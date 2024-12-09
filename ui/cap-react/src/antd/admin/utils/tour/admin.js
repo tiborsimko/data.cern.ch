@@ -63,14 +63,14 @@ export const steps = [
       "You can see the JSON schema representation of your form and a diff view of all the current unsaved changes here.",
   },
   {
-    target: ".tour-schema-settings",
-    content:
-      "On a new schema, you will have to provide some settings like id, version, name or experiment before being able to save your changes.",
-  },
-  {
     target: ".tour-notifications-tab",
     content:
       "The notifications tab allows you create notification templates and define patterns to send them to the appropriate users when an event takes place.",
+  },
+  {
+    target: ".tour-settings-tab",
+    content:
+      "On a new schema, you will have to provide some settings like id, version, name or experiment before being able to save your changes. Here you can also define permissions for the schema.",
   },
   {
     target: "body",

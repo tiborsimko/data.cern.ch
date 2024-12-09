@@ -4,15 +4,15 @@ import { Col, Layout } from "antd";
 import Error from "../../../partials/Error/";
 import { transformSchema } from "../../../partials/Utils/schema";
 import Header from "../../containers/EditorHeader";
-import Form from "../../../forms";
 import { canEdit } from "../../utils/permissions";
-import { debounce } from "lodash-es";
+import { FormuleForm } from "react-formule";
+
+import objectPath from "object-path";
 
 const Editor = ({
   schemaErrors,
   schemas = { schema: {}, uiSchema: {} },
   formData,
-  formDataChange,
   extraErrors,
   formRef,
   history,
@@ -29,21 +29,44 @@ const Editor = ({
   let _schema =
     schemas && schemas.schema ? transformSchema(schemas.schema) : null;
 
-  const _formDataChange = change => formDataChange(change.formData);
+  // mainly this is used for the drafts forms
+  // we want to allow forms to be saved even without required fields
+  // if these fields are not filled in when publishing then an error will be shown
+  const transformErrors = errors => {
+    errors = errors
+      .filter(item => item.name != "required")
+      .map(error => {
+        console.log(error);
+        if (error.name == "required") return null;
+
+        // Update messages for undefined fields when required,
+        // from "should be string" ==> "Either edit or remove"
+        if (error.message == "should be string") {
+          let errorMessages = objectPath.get(formData, error.property);
+          if (errorMessages == undefined)
+            error.message = "Either edit or remove";
+        }
+
+        return error;
+      });
+
+    return errors;
+  };
+
   return (
     <Col span={24} style={{ height: "100%", overflow: "auto" }}>
       <Layout style={{ height: "100%", padding: 0 }}>
         <Header formRef={formRef} mode={mode} updateMode={setMode} />
         <Layout.Content style={{ height: "100%", overflowX: "hidden" }}>
-          <Form
+          <FormuleForm
             formData={formData || {}}
             formRef={formRef}
             schema={_schema}
             uiSchema={schemas.uiSchema || {}}
-            onChange={debounce(_formDataChange, 200)}
             extraErrors={extraErrors || {}}
-            draftEditor
-            readonly={mode != "edit" || !canEdit(canAdmin, canUpdate)}
+            readonly={!canEdit(canAdmin, canUpdate)}
+            isPublished={mode != "edit"}
+            transformErrors={transformErrors}
           />
         </Layout.Content>
       </Layout>
@@ -55,11 +78,6 @@ Editor.propTypes = {
   schemaErrors: PropTypes.array,
   schemas: PropTypes.object,
   formData: PropTypes.object,
-  currentUser: PropTypes.object,
-  match: PropTypes.object,
-  initForm: PropTypes.func,
-  fetchSchemaByNameVersion: PropTypes.func,
-  formDataChange: PropTypes.func,
   extraErrors: PropTypes.object,
   formRef: PropTypes.object,
   history: PropTypes.object,

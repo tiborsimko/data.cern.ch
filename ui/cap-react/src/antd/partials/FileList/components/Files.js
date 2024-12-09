@@ -76,7 +76,9 @@ const Files = ({
     return choices[value];
   };
 
-  return renderList.map(item => getContentFromProps(item));
+  return renderList.map(item => (
+    <div key={item}>{getContentFromProps(item)}</div>
+  ));
 };
 
 Files.propTypes = {

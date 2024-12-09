@@ -1,7 +1,7 @@
 import { Row, Col, Typography, Space } from "antd";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
-import { ReactComponent as ReanaIcon } from "../img/reana.svg";
-import { ReactComponent as PIDFair } from "../img/pid_fair.svg";
+import ReanaIcon from "../img/reana.svg?react";
+import PIDFair from "../img/pid_fair.svg?react";
 
 const Integrations = () => {
   return (

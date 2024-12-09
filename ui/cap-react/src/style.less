@@ -19,17 +19,25 @@
   font-weight: 600;
 }
 
-.__mainContent__{
+html,
+body,
+#root {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.__mainContent__ {
   overflow-x: hidden;
 }
 
 .__mainLayout__ {
   height: 100vh !important;
   overflow-x: hidden;
-  padding: 0 !important
+  padding: 0 !important;
 }
 
-.ant-layout-footer{
+.ant-layout-footer {
   padding: 0;
 }
 
@@ -37,7 +45,13 @@
   height: fit-content;
 }
 
-.ant-select-selector, .ant-select-dropdown, .ant-select-item-option-active, .ant-select-item-option-selected, .ant-notification-notice {
+// FIXME: would be unecessary if https://github.com/rjsf-team/react-jsonschema-form/issues/2838 gets fixed in rjsf's side
+.ant-select-selector,
+.ant-select-dropdown,
+.ant-select-item-option-active,
+.ant-select-item-option-selected,
+.ant-notification-notice,
+.ant-input-textarea-affix-wrapper {
   border-radius: 2px !important;
 }
 
@@ -54,11 +68,11 @@
   }
 }
 
-.rjsf{
+.rjsf {
   height: 100%;
 }
 
-.hoverPointer:hover{
+.hoverPointer:hover {
   cursor: pointer;
 }
 
@@ -71,7 +85,7 @@
 }
 
 .no-bottom-border .ant-menu-item::after {
-    border-bottom: none !important;
+  border-bottom: none !important;
 }
 
 .__mainHeader__ {
@@ -88,5 +102,5 @@
 // Needed to make RJSF tooltip dialogs look the same as the rest
 .ant-tooltip .ant-tooltip-inner {
   border-radius: 2px;
-  font-family: "Titillium Web",
+  font-family: "Titillium Web";
 }

@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import fs from "fs/promises";
 import { visualizer } from "rollup-plugin-visualizer";
+import ViteRestart from "vite-plugin-restart";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -16,6 +17,10 @@ export default defineConfig(({ mode }) => {
         open: true,
         gzipSize: true,
         brotliSize: true,
+      }),
+      // Restarts the dev server (full reload aka --force) when a new version of react-formule is available
+      ViteRestart({
+        restart: ["../../../react-formule/dist/react-formule.js"],
       }),
     ],
     server: {
@@ -37,6 +42,14 @@ export default defineConfig(({ mode }) => {
     build: {
       commonjsOptions: {
         transformMixedEsModules: true,
+      },
+      sourcemap: true, // For Sentry
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            "react-formule": ["react-formule"],
+          },
+        },
       },
     },
     // Allows writing JSX in .js files
@@ -60,14 +73,11 @@ export default defineConfig(({ mode }) => {
           },
         ],
       },
+      include: ["react-formule"],
     },
     // TEMPORARY: allows using process.env (ideally we should use import.meta.env I think)
     define: {
       "process.env": {},
-    },
-    // Avoid duplicate dependencies (codemirror was breaking because of this)
-    resolve: {
-      dedupe: ["@codemirror/state", "@codemirror/view"],
     },
     // Avoid errors when accesing e.g. document from tests
     test: {

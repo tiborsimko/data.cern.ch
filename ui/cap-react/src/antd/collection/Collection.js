@@ -1,7 +1,7 @@
 import { fetchRecordsResults } from "../../actions/common";
 import DashboardList from "../dashboard/components/DashboardList";
 import { _getCollectionList } from "../dashboard/utils";
-import RichEditorWidget from "../forms/widgets/RichEditorWidget";
+import RichEditorWidget from "../forms/RichEditorWidget";
 import ErrorScreen from "../partials/Error";
 import CollectionPermissions from "./CollectionPermissions";
 import { CloseOutlined, EditOutlined, SaveOutlined } from "@ant-design/icons";
@@ -165,11 +165,11 @@ const Collection = ({
                     </Button>
                   ))
                 }
-                bodyStyle={{
+                style={{ body: {
                   padding: "1px 0 0 0",
                   maxHeight: "300px",
                   overflowY: "auto",
-                }}
+                }}}
               >
                 {readme || editing ? (
                   <RichEditorWidget

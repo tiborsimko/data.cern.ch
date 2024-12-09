@@ -13,7 +13,7 @@ const DraftSideBar = ({ visibleFileDrawer, onClose }) => {
       open={visibleFileDrawer}
       key="fileSettings"
       size="large"
-      bodyStyle={{ padding: "5px" }}
+      style={{ body: { padding: "5px" } }}
       contentWrapperStyle={{ width: !screens.lg ? "80%" : "40%" }}
     >
       <SideBar />

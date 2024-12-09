@@ -5,10 +5,10 @@ import {
   GithubOutlined,
 } from "@ant-design/icons";
 
-import { ReactComponent as AliceIcon } from "../img/alice.svg";
-import { ReactComponent as AtlasIcon } from "../img/atlas.svg";
-import { ReactComponent as CmsIcon } from "../img/cms.svg";
-import { ReactComponent as LHCbLogo } from "../img/lhcb-logo.svg";
+import AliceIcon from "../img/alice.svg?react";
+import AtlasIcon from "../img/atlas.svg?react";
+import CmsIcon from "../img/cms.svg?react";
+import LHCbLogo from "../img/lhcb-logo.svg?react";
 
 const { useBreakpoint } = Grid;
 

@@ -10,6 +10,7 @@ const FileModal = ({ open, file, onCancel, versions }) => {
   let _versions = versions
     .filter(version => version.get("key") === file.data.key)
     .map(i => ({
+      key: i.get("version_id"),
       checksum: i.get("checksum"),
       created: i.get("created"),
       head: i.get("is_head"),

@@ -2,9 +2,11 @@ import PropTypes from "prop-types";
 import { Button, Col, Row, Space } from "antd";
 import CheckableTag from "antd/es/tag/CheckableTag";
 import { useState } from "react";
-import { PRIMARY_COLOR } from "../../utils";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
-const SelectContentType = ({ contentTypes, selectEdit, selectView }) => {
+import { CMS_EDITOR, CMS_SCHEMA } from "../../routes";
+import { withRouter } from "react-router";
+import { PRIMARY_COLOR } from "../../utils/theme";
+const SelectContentType = ({ contentTypes, history }) => {
   const [selectedTag, setSelectedTag] = useState();
 
   return (
@@ -31,7 +33,7 @@ const SelectContentType = ({ contentTypes, selectEdit, selectView }) => {
         <Col>
           <Button
             disabled={!selectedTag}
-            onClick={() => selectView(selectedTag)}
+            onClick={() => history.push(`${CMS_SCHEMA}/${selectedTag}`)}
             icon={<EyeOutlined />}
             data-cy="viewSchemaButton"
           >
@@ -41,7 +43,7 @@ const SelectContentType = ({ contentTypes, selectEdit, selectView }) => {
         <Col>
           <Button
             disabled={!selectedTag}
-            onClick={() => selectEdit(selectedTag)}
+            onClick={() => history.push(`${CMS_EDITOR}/${selectedTag}`)}
             type="primary"
             icon={<EditOutlined />}
             data-cy="editSchemaButton"
@@ -59,4 +61,4 @@ SelectContentType.propTypes = {
   select: PropTypes.func,
 };
 
-export default SelectContentType;
+export default withRouter(SelectContentType);

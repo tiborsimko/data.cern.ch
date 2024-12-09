@@ -1,11 +1,11 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Row, Space, Tag, Typography, Descriptions, Card } from "antd";
-import { Link, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import DepositFilesList from "../../../partials/FileList";
 import { canEdit } from "../../utils/permissions";
-import { DRAFT_ITEM, COLLECTION_BASE } from "../../../routes";
+import { COLLECTION_BASE } from "../../../routes";
 import Timeago from "react-timeago";
 import FileManager from "../../containers/FileManager";
 
@@ -96,33 +96,28 @@ const SideBar = ({
         <Card
           size="small"
           title="Files | Data | Repos"
-          extra={[
+          extra={
             status != "published" && canEdit(canAdmin, canUpdate) && (
-              <Route
-                path={DRAFT_ITEM}
-                render={() => (
-                  <Space direction="horizontal" size="middle">
-                    <Button
-                      size="small"
-                      key="refresh"
-                      icon={<ReloadOutlined />}
-                      onClick={() => {
-                        let { bucket } = links;
-                        let bucket_id = bucket.split("/").pop();
-                        getBucketById(bucket_id);
-                      }}
-                    />
-                    <Button
-                      key="add"
-                      size="small"
-                      icon={<PlusOutlined />}
-                      onClick={() => setShowModal(true)}
-                    />
-                  </Space>
-                )}
-              />
-            ),
-          ]}
+              <Space direction="horizontal" size="middle">
+                <Button
+                  size="small"
+                  key="refresh"
+                  icon={<ReloadOutlined />}
+                  onClick={() => {
+                    let { bucket } = links;
+                    let bucket_id = bucket.split("/").pop();
+                    getBucketById(bucket_id);
+                  }}
+                />
+                <Button
+                  key="add"
+                  size="small"
+                  icon={<PlusOutlined />}
+                  onClick={() => setShowModal(true)}
+                />
+              </Space>
+            )
+          }
         >
           <DepositFilesList files={files} />
         </Card>

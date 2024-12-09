@@ -1,57 +1,50 @@
 import PropTypes from "prop-types";
-import HTML5Backend from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
 import { Col, Row, Spin } from "antd";
-import PropertyEditor from "../containers/PropertyEditor";
-import SelectFieldType from "../containers/SelectFieldType";
-import SchemaPreview from "../containers/SchemaPreview";
-import FormPreview from "../containers/FormPreview";
+import { FormPreview, SchemaPreview, SelectOrEdit } from "react-formule";
 
-const SchemaWizard = ({ field, loader }) => {
-  if (loader)
+const SchemaWizard = ({ loading }) => {
+  if (loading)
     return (
       <Row style={{ height: "100%" }} align="middle" justify="center">
         <Spin size="large" />
       </Row>
     );
   return (
-    <DndProvider backend={HTML5Backend}>
-      <Row style={{ height: "100%" }}>
-        <Col
-          xs={10}
-          sm={5}
-          style={{
-            overflowX: "hidden",
-            height: "100%",
-            display: "flex",
-          }}
-          className="tour-field-types"
-        >
-          {field ? <PropertyEditor /> : <SelectFieldType />}
-        </Col>
-        <Col
-          xs={14}
-          sm={5}
-          style={{
-            overflowX: "hidden",
-            height: "100%",
-            padding: "0px 15px",
-            backgroundColor: "#F6F7F8",
-          }}
-          className="tour-schema-preview"
-        >
-          <SchemaPreview />
-        </Col>
-        <Col
-          xs={24}
-          sm={14}
-          style={{ overflowX: "hidden", height: "100%", padding: "0px 15px" }}
-          className="tour-form-preview"
-        >
-          <FormPreview />
-        </Col>
-      </Row>
-    </DndProvider>
+    <Row style={{ height: "100%" }}>
+      <Col
+        xs={10}
+        sm={5}
+        style={{
+          overflowX: "hidden",
+          height: "100%",
+          display: "flex",
+        }}
+        className="tour-field-types"
+      >
+        <SelectOrEdit />
+      </Col>
+      <Col
+        xs={14}
+        sm={5}
+        style={{
+          overflowX: "hidden",
+          height: "100%",
+          padding: "0px 15px",
+          backgroundColor: "#F6F7F8",
+        }}
+        className="tour-schema-preview"
+      >
+        <SchemaPreview />
+      </Col>
+      <Col
+        xs={24}
+        sm={14}
+        style={{ overflowX: "hidden", height: "100%", padding: "0px 15px" }}
+        className="tour-form-preview"
+      >
+        <FormPreview />
+      </Col>
+    </Row>
   );
 };
 

@@ -1,22 +1,31 @@
-import {
-  CloseOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import { Space, Tag, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
 const { CheckableTag } = Tag;
 
-const CollectionPermissionsColumn = ({ e, item, type, handlePermissions, editable = false }) => {
+const CollectionPermissionsColumn = ({
+  e,
+  item,
+  type,
+  handlePermissions,
+  editable = false,
+}) => {
   const [draftIncluded, setDraftIncluded] = useState(
-  e.includes(`deposit-schema-${type}`)
+    e.includes(`deposit-schema-${type}`)
   );
   const [pubIncluded, setPubIncluded] = useState(
     e.includes(`record-schema-${type}`)
   );
 
   const requestPermissionUpdate = (rec_type, checked) => {
-    handlePermissions(item.email, [`${rec_type}-schema-${type}`], item.type, checked ? "add": "delete");
+    handlePermissions(
+      item.email,
+      [`${rec_type}-schema-${type}`],
+      item.type,
+      checked ? "add" : "delete"
+    );
     rec_type == "record" ? setPubIncluded(checked) : setDraftIncluded(checked);
   };
 

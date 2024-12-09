@@ -1,9 +1,9 @@
 import { connect } from "react-redux";
-import { createNewNotification } from "../../../../actions/schemaWizard";
+import { createNewNotification } from "../../../../actions/builder";
 import NotificationList from "../components/NotificationList";
 
-const mapStateToProps = (state) => ({
-  schemaConfig: state.schemaWizard.getIn([
+const mapStateToProps = state => ({
+  schemaConfig: state.builder.getIn([
     "config",
     "config",
     "notifications",
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  createNewNotification: (category) => createNewNotification(category),
+  createNewNotification: category => createNewNotification(category),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationList);

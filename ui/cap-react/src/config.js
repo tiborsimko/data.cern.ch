@@ -1,8 +1,13 @@
-const config = {
-  project: {
-    name: "CERN Analysis Preservation",
-    api: "https://pammbp.cern.ch:5000"
-  }
-};
+import * as Sentry from "@sentry/react";
 
-export default config;
+export function getConfigFor(configKey, notSetValue = null) {
+  try {
+    return window.CONFIG[configKey] != null
+      ? window.CONFIG[configKey]
+      : notSetValue;
+  } catch (error) {
+    Sentry.captureException(error);
+    console.error(error); // eslint-disable-line no-console
+    return notSetValue;
+  }
+}

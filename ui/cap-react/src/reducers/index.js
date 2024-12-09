@@ -8,8 +8,8 @@ import published from "./published";
 import dashboard from "./dashboard";
 import workflows from "./workflows";
 import status from "./status";
-import schemaWizard from "./schemaWizard";
 import collection from "./collection";
+import builder from "./builder";
 
 const rootReducer = history =>
   combineReducers({
@@ -20,9 +20,9 @@ const rootReducer = history =>
     published,
     workflows,
     status,
-    schemaWizard,
+    builder,
     collection,
-    router: connectRouter(history)
+    router: connectRouter(history),
   });
 
 export default rootReducer;

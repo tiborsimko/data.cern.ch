@@ -1,6 +1,6 @@
 import { Card, Col, Row } from "antd";
-import CreateForm from "../containers/CreateForm";
-import DropZoneForm from "../containers/DropZoneForm";
+import CreateForm from "../components/CreateForm";
+import DropZoneForm from "../components/DropZoneForm";
 import SelectContentType from "../containers/SelectContentType";
 
 const AdminIndex = () => {
